@@ -5,6 +5,8 @@
   "homepage": "https://demos.creative-tim.com/black-dashboard-react/#/admin/dashboard",
   "dependencies": {
     "@types/react": "16.9.23",
+    "axios": "^0.20.0",
+    "bootstrap": "^4.5.2",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
     "history": "4.10.1",
@@ -16,7 +18,8 @@
     "react-dom": "16.13.0",
     "react-google-maps": "9.4.5",
     "react-notification-alert": "0.0.12",
-    "react-router-dom": "5.1.2",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "reactstrap": "8.4.1"
   },
