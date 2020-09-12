@@ -5,9 +5,14 @@
   "homepage": "https://demos.creative-tim.com/black-dashboard-react/#/admin/dashboard",
   "dependencies": {
     "@types/react": "16.9.23",
+
     "availity-reactstrap-validation": "^2.6.1",
+
+    "axios": "^0.20.0",
+
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
+    "formik": "^2.1.5",
     "history": "4.10.1",
     "node-sass": "4.13.1",
     "perfect-scrollbar": "1.5.0",
@@ -21,7 +26,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "5.1.2",
     "react-scripts": "3.4.0",
-    "reactstrap": "8.4.1"
+    "reactstrap": "8.4.1",
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",
