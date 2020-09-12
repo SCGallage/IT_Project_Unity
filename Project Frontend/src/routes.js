@@ -23,6 +23,54 @@ import Rtl from "views/Rtl.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
+
+import AddAmbulanceDetails from "./components/Ambulance/AddAmbulanceDetails";
+import EmergencyPro from "./components/Ambulance/EmergencyPro";
+import ViewAmbulanceDetails from "./components/Ambulance/ViewAmbulanceDetails";
+import ViewAmbulanceTimeSlot from "./components/Ambulance/AddAmbulanceTimeSlot";
+import EditAmbulanceTimeSlot from "./components/Ambulance/EditAmbulanceTimeSlot";
+import AddAmbulanceTimeSlot from "./components/Ambulance/AddAmbulanceTimeSlot";
+
+var routes = [
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    rtlName: "لوحة القيادة",
+    icon: "tim-icons icon-chart-pie-36",
+    component: Dashboard,
+    layout: "/admin"
+  },
+
+    //Emergency properties
+  {
+    path: "/emergency-pro",
+    name: "Emergency",
+    rtlName: "الرموز",
+    icon: "tim-icons icon-atom",
+    component: EmergencyPro,
+    layout: "/admin"
+  },
+
+  {
+    path: "/view-ambulance-details",
+    rtlName: "الرموز",
+    component: ViewAmbulanceDetails,
+    layout: "/admin"
+  },
+
+  {
+    path: "/add-ambulance-details",
+    rtlName: "الرموز",
+    component: AddAmbulanceDetails,
+    layout: "/admin"
+  },
+
+  {
+    path: "/view-ambulance-timeslots",
+    rtlName: "الرموز",
+    component: ViewAmbulanceTimeSlot,
+    layout: "/admin"
+
 import ItemType from "./views/ItemType";
 import Item from "./views/Item";
 import AddItem from "./views/AddItem";
@@ -38,8 +86,22 @@ var routes = [
     layout: "/nurse",
     invisible: true,
     exact : true
+
+  },
+
+  {
+
+    path: "/edit-ambulance-timeslot",
+    rtlName: "الرموز",
+    component: EditAmbulanceTimeSlot,
+    layout: "/admin"
   },
   {
+    path: "/add-ambulance-timeslot",
+    rtlName: "الرموز",
+    component: AddAmbulanceTimeSlot,
+    layout: "/admin"
+
     path: "/inventory/addItem",
     name: "Add Item",
     rtlName: "ار تي ال",
@@ -64,6 +126,8 @@ var routes = [
     component: ItemType,
     layout: "/nurse",
     invisible: true
+
   }
+
 ];
 export default routes;

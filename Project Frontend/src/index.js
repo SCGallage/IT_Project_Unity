@@ -29,6 +29,7 @@ import "assets/demo/demo.css";
 import "assets/css/nucleo-icons.css";
 import {exact} from "prop-types";
 
+
 const hist = createBrowserHistory();
 
 ReactDOM.render(
