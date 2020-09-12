@@ -23,71 +23,47 @@ import Rtl from "views/Rtl.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
+import ItemType from "./views/ItemType";
+import Item from "./views/Item";
+import AddItem from "./views/AddItem";
+import ItemDetails from "./views/ItemDetails";
 
 var routes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
-    icon: "tim-icons icon-chart-pie-36",
-    component: Dashboard,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    rtlName: "الرموز",
-    icon: "tim-icons icon-atom",
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/map",
-    name: "Map",
-    rtlName: "خرائط",
-    icon: "tim-icons icon-pin",
-    component: Map,
-    layout: "/admin"
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    rtlName: "إخطارات",
-    icon: "tim-icons icon-bell-55",
-    component: Notifications,
-    layout: "/admin"
-  },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    rtlName: "ملف تعريفي للمستخدم",
-    icon: "tim-icons icon-single-02",
-    component: UserProfile,
-    layout: "/admin"
-  },
-  {
-    path: "/tables",
-    name: "Table List",
-    rtlName: "قائمة الجدول",
-    icon: "tim-icons icon-puzzle-10",
-    component: TableList,
-    layout: "/admin"
-  },
-  {
-    path: "/typography",
-    name: "Typography",
-    rtlName: "طباعة",
-    icon: "tim-icons icon-align-center",
-    component: Typography,
-    layout: "/admin"
-  },
-  {
-    path: "/rtl-support",
-    name: "RTL Support",
+    path: "/inventory",
+    name: "Item Details",
     rtlName: "ار تي ال",
     icon: "tim-icons icon-world",
-    component: Rtl,
-    layout: "/rtl"
+    component: ItemDetails,
+    layout: "/nurse",
+    invisible: true,
+    exact : true
+  },
+  {
+    path: "/inventory/addItem",
+    name: "Add Item",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-world",
+    component: AddItem,
+    layout: "/nurse"
+  },
+  {
+    path: "/inventory/:id",
+    name: "Item",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-world",
+    component: Item,
+    layout: "/nurse",
+    invisible: true
+  },
+  {
+    path: "/inventory/items/:type",
+    name: "Item",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-world",
+    component: ItemType,
+    layout: "/nurse",
+    invisible: true
   }
 ];
 export default routes;

@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import axios from "axios";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 
@@ -33,9 +34,12 @@ import {
   Navbar,
   NavLink,
   Nav,
+  Form,
+  FormGroup,
   Container,
   Modal
 } from "reactstrap";
+import Footer from "../Footer/Footer";
 
 class AdminNavbar extends React.Component {
   constructor(props) {
@@ -43,10 +47,22 @@ class AdminNavbar extends React.Component {
     this.state = {
       collapseOpen: false,
       modalSearch: false,
-      color: "navbar-transparent"
+      color: "navbar-transparent",
+      albums: [],
+      expired: []
     };
   }
   componentDidMount() {
+    axios.get("http://localhost:8080/expiring")
+        .then(response => {
+              this.setState({albums: response.data})
+              console.log(response)
+            }
+        )
+    axios.get("http://localhost:8080/expired")
+        .then(res => {
+          this.setState({expired: res.data})
+        })
     window.addEventListener("resize", this.updateColor);
   }
   componentWillUnmount() {
@@ -85,7 +101,13 @@ class AdminNavbar extends React.Component {
       modalSearch: !this.state.modalSearch
     });
   };
+
+  CreateURL(para){
+    return "http://localhost:3000/admin/deleteItem/"+para
+  }
+
   render() {
+    const { albums } =this.state
     return (
       <>
         <Navbar
@@ -129,18 +151,21 @@ class AdminNavbar extends React.Component {
             </button>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <Nav className="ml-auto" navbar>
+                {this.props.location.pathname.indexOf("inventory") === -1 ? null : (
                 <InputGroup className="search-bar">
+                  <Form inline>
+                  <FormGroup className="no-border">
+                    <Input type="text" placeholder="Search"/>
+                  </FormGroup>
                   <Button
                     color="link"
-                    data-target="#searchModal"
-                    data-toggle="modal"
-                    id="search-button"
-                    onClick={this.toggleModalSearch}
                   >
                     <i className="tim-icons icon-zoom-split" />
                     <span className="d-lg-none d-md-block">Search</span>
                   </Button>
+                  </Form>
                 </InputGroup>
+                )}
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret
@@ -149,35 +174,46 @@ class AdminNavbar extends React.Component {
                     nav
                   >
                     <div className="notification d-none d-lg-block d-xl-block" />
-                    <i className="tim-icons icon-sound-wave" />
+                    <i className="tim-icons icon-bell-55" />
                     <p className="d-lg-none">Notifications</p>
                   </DropdownToggle>
-                  <DropdownMenu className="dropdown-navbar" right tag="ul">
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">
-                        Mike John responded to your email
-                      </DropdownItem>
-                    </NavLink>
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">
-                        You have 5 more tasks
-                      </DropdownItem>
-                    </NavLink>
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">
-                        Your friend Michael is in town
-                      </DropdownItem>
-                    </NavLink>
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">
-                        Another notification
-                      </DropdownItem>
-                    </NavLink>
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">
-                        Another one
-                      </DropdownItem>
-                    </NavLink>
+                  <DropdownMenu className="dropdown-black" right tag="ul">
+                    {
+                      albums.length ?
+                      albums.map(post =>
+                          <div key={post.itemID}>
+                          <NavLink tag="li" >
+                        <DropdownItem className="nav-item" href={this.CreateURL(post.itemID)}>
+                          {post.displayName} is nearing expiration click here to visit the item.
+                        </DropdownItem>
+                      </NavLink>
+                          </div>):"No posts to show"
+                    }
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <UncontrolledDropdown nav>
+                  <DropdownToggle
+                      caret
+                      color="default"
+                      data-toggle="dropdown"
+                      nav
+                  >
+                    <div className="notification d-none d-lg-block d-xl-block" />
+                    <i className="tim-icons icon-alert-circle-exc" />
+                    <p className="d-lg-none">Notifications</p>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-black" right tag="ul">
+                    {
+                      this.state.expired.length ?
+                          this.state.expired.map(post =>
+                              <div key={post.itemID}>
+                                <NavLink tag="li" >
+                                  <DropdownItem className="nav-item" href={this.CreateURL(post.itemID)}>
+                                    {post.displayName} is nearing expiration click here to visit the item.
+                                  </DropdownItem>
+                                </NavLink>
+                              </div>):"No posts to show"
+                    }
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <UncontrolledDropdown nav>
@@ -187,6 +223,30 @@ class AdminNavbar extends React.Component {
                     data-toggle="dropdown"
                     nav
                     onClick={e => e.preventDefault()}
+                  >
+                    <i className="tim-icons icon-cart" />
+                    <span className="d-lg-none d-md-block">Shopping Cart</span>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-navbar" right tag="ul">
+                    <NavLink tag="li">
+                      <DropdownItem className="nav-item">Profile</DropdownItem>
+                    </NavLink>
+                    <NavLink tag="li">
+                      <DropdownItem className="nav-item">Settings</DropdownItem>
+                    </NavLink>
+                    <DropdownItem divider tag="li" />
+                    <NavLink tag="li">
+                      <DropdownItem className="nav-item">Log out</DropdownItem>
+                    </NavLink>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <UncontrolledDropdown nav>
+                  <DropdownToggle
+                      caret
+                      color="default"
+                      data-toggle="dropdown"
+                      nav
+                      onClick={e => e.preventDefault()}
                   >
                     <div className="photo">
                       <img alt="..." src={require("assets/img/anime3.png")} />
