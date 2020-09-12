@@ -26,12 +26,14 @@ import RTLLayout from "layouts/RTL/RTL.js";
 import "assets/scss/black-dashboard-react.scss";
 import "assets/demo/demo.css";
 import "assets/css/nucleo-icons.css";
+import {UpdateEmployee} from "./components/Employee/UpdateEmployee";
 
 const hist = createBrowserHistory();
 
 ReactDOM.render(
   <Router history={hist}>
     <Switch>
+        <Route path = "/update-employee/:id" component = {UpdateEmployee}></Route>
       <Route path="/admin" render={props => <AdminLayout {...props} />} />
       <Route path="/rtl" render={props => <RTLLayout {...props} />} />
       <Redirect from="/" to="/admin/dashboard" />

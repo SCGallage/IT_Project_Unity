@@ -107,6 +107,9 @@ class Sidebar extends React.Component {
     }
     return (
       <div className="sidebar" data={bgColor}>
+
+
+
         <div className="sidebar-wrapper" ref="sidebar">
           {logoImg !== null || logoText !== null ? (
             <div className="logo">
@@ -137,16 +140,7 @@ class Sidebar extends React.Component {
                 </li>
               );
             })}
-            <li
-              className="active-pro"
-            >
-              <ReactstrapNavLink
-                href="https://www.creative-tim.com/product/black-dashboard-pro-react?ref=bdr-user-archive-sidebar-upgrade-pro"
-              >
-                <i className="tim-icons icon-spaceship" />
-                <p>Upgrade to PRO</p>
-              </ReactstrapNavLink>
-            </li>
+
           </Nav>
         </div>
       </div>
