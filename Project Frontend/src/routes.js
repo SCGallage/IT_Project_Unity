@@ -23,6 +23,12 @@ import Rtl from "views/Rtl.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
+import AddAmbulanceDetails from "./components/Ambulance/AddAmbulanceDetails";
+import EmergencyPro from "./components/Ambulance/EmergencyPro";
+import ViewAmbulanceDetails from "./components/Ambulance/ViewAmbulanceDetails";
+import ViewAmbulanceTimeSlot from "./components/Ambulance/AddAmbulanceTimeSlot";
+import EditAmbulanceTimeSlot from "./components/Ambulance/EditAmbulanceTimeSlot";
+import AddAmbulanceTimeSlot from "./components/Ambulance/AddAmbulanceTimeSlot";
 
 var routes = [
   {
@@ -33,61 +39,50 @@ var routes = [
     component: Dashboard,
     layout: "/admin"
   },
+
+    //Emergency properties
   {
-    path: "/icons",
-    name: "Icons",
+    path: "/emergency-pro",
+    name: "Emergency",
     rtlName: "الرموز",
     icon: "tim-icons icon-atom",
-    component: Icons,
+    component: EmergencyPro,
+    layout: "/admin"
+  },
+
+  {
+    path: "/view-ambulance-details",
+    rtlName: "الرموز",
+    component: ViewAmbulanceDetails,
+    layout: "/admin"
+  },
+
+  {
+    path: "/add-ambulance-details",
+    rtlName: "الرموز",
+    component: AddAmbulanceDetails,
+    layout: "/admin"
+  },
+
+  {
+    path: "/view-ambulance-timeslots",
+    rtlName: "الرموز",
+    component: ViewAmbulanceTimeSlot,
+    layout: "/admin"
+  },
+
+  {
+    path: "/edit-ambulance-timeslot",
+    rtlName: "الرموز",
+    component: EditAmbulanceTimeSlot,
     layout: "/admin"
   },
   {
-    path: "/map",
-    name: "Map",
-    rtlName: "خرائط",
-    icon: "tim-icons icon-pin",
-    component: Map,
+    path: "/add-ambulance-timeslot",
+    rtlName: "الرموز",
+    component: AddAmbulanceTimeSlot,
     layout: "/admin"
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    rtlName: "إخطارات",
-    icon: "tim-icons icon-bell-55",
-    component: Notifications,
-    layout: "/admin"
-  },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    rtlName: "ملف تعريفي للمستخدم",
-    icon: "tim-icons icon-single-02",
-    component: UserProfile,
-    layout: "/admin"
-  },
-  {
-    path: "/tables",
-    name: "Table List",
-    rtlName: "قائمة الجدول",
-    icon: "tim-icons icon-puzzle-10",
-    component: TableList,
-    layout: "/admin"
-  },
-  {
-    path: "/typography",
-    name: "Typography",
-    rtlName: "طباعة",
-    icon: "tim-icons icon-align-center",
-    component: Typography,
-    layout: "/admin"
-  },
-  {
-    path: "/rtl-support",
-    name: "RTL Support",
-    rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
-    component: Rtl,
-    layout: "/rtl"
   }
+
 ];
 export default routes;

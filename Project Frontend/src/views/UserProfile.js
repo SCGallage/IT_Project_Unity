@@ -16,197 +16,114 @@
 
 */
 import React from "react";
+import {NavLink} from 'react-router-dom'
 
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  CardText,
-  FormGroup,
-  Form,
-  Input,
-  Row,
-  Col
+    Card,
+    CardHeader,
+    CardBody,
+    CardTitle,
+    Table,
+    Row,
+    Button,
+    Col,
+    CustomInput,
+    Label,
+    FormGroup
 } from "reactstrap";
 
-class UserProfile extends React.Component {
-  render() {
-    return (
-      <>
-        <div className="content">
-          <Row>
-            <Col md="8">
-              <Card>
-                <CardHeader>
-                  <h5 className="title">Edit Profile</h5>
-                </CardHeader>
-                <CardBody>
-                  <Form>
+//View details about ambulance, delete, add another by clicking the link provided
+class ViewAmbulanceTimeSlot extends React.Component {
+    render() {
+        return (
+            <>
+                <div className="content">
                     <Row>
-                      <Col className="pr-md-1" md="5">
-                        <FormGroup>
-                          <label>Company (disabled)</label>
-                          <Input
-                            defaultValue="Creative Code Inc."
-                            disabled
-                            placeholder="Company"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="px-md-1" md="3">
-                        <FormGroup>
-                          <label>Username</label>
-                          <Input
-                            defaultValue="michael23"
-                            placeholder="Username"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-md-1" md="4">
-                        <FormGroup>
-                          <label htmlFor="exampleInputEmail1">
-                            Email address
-                          </label>
-                          <Input placeholder="mike@email.com" type="email" />
-                        </FormGroup>
-                      </Col>
+                        <Col md="12">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle tag="h3" className="text-center">Ambulance Time Slot Details</CardTitle>
+                                </CardHeader>
+                                <CardBody>
+                                    <div>
+
+                                        <Button color="danger"><a href="/admin/add-ambulance-timeslot" style={{color:"white"}}>ADD</a></Button>
+                                    </div>
+
+                                    <Table className="tablesorter table-hover" responsive>
+                                        <thead className="text-primary">
+                                        <tr>
+                                            <th>State      </th>
+                                            <th>Time       </th>
+                                            <th>Email      </th>
+                                            <th>Ambulance Id</th>
+                                            <th>Driver Id </th>
+                                            <th>Nurse Id </th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>
+                                                <FormGroup>
+                                                    <Label for="exampleCheckbox"></Label>
+                                                    <div>
+                                                        <CustomInput type="switch" id="exampleCustomSwitch" name="customSwitch" label="Completed" />
+                                                    </div>
+                                                </FormGroup>
+                                            </td>
+                                            <td>
+                                                <time placeholder="2.00pm"/>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td className="text-center animation-on-hover">
+                                                <Button className="btn-icon animation-on-hover" color="success" size="sm">
+                                                    <i className="fa fa-edit"></i>
+                                                </Button>{` `}
+                                                <Button className="btn-icon animation-on-hover" color="danger" size="sm">
+                                                    <i className="fa fa-times" />
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <FormGroup>
+                                                    <Label for="exampleCheckbox"></Label>
+                                                    <div>
+                                                        <CustomInput type="switch" id="exampleCustomSwitch" name="customSwitch" label="Completed" />
+                                                    </div>
+                                                </FormGroup>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>a</td>
+                                            <td className="text-center">
+                                                <Button className="btn-icon" color="success" size="sm">
+                                                    <i className="fa fa-edit animation-on-hover"></i>
+                                                </Button>{` `}
+                                                <Button className="btn-icon animation-on-hover" color="danger" size="sm">
+                                                    <i className="fa fa-times" />
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </Table>
+                                </CardBody>
+                            </Card>
+                        </Col>
                     </Row>
-                    <Row>
-                      <Col className="pr-md-1" md="6">
-                        <FormGroup>
-                          <label>First Name</label>
-                          <Input
-                            defaultValue="Mike"
-                            placeholder="Company"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-md-1" md="6">
-                        <FormGroup>
-                          <label>Last Name</label>
-                          <Input
-                            defaultValue="Andrew"
-                            placeholder="Last Name"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="12">
-                        <FormGroup>
-                          <label>Address</label>
-                          <Input
-                            defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                            placeholder="Home Address"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className="pr-md-1" md="4">
-                        <FormGroup>
-                          <label>City</label>
-                          <Input
-                            defaultValue="Mike"
-                            placeholder="City"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="px-md-1" md="4">
-                        <FormGroup>
-                          <label>Country</label>
-                          <Input
-                            defaultValue="Andrew"
-                            placeholder="Country"
-                            type="text"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col className="pl-md-1" md="4">
-                        <FormGroup>
-                          <label>Postal Code</label>
-                          <Input placeholder="ZIP Code" type="number" />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col md="8">
-                        <FormGroup>
-                          <label>About Me</label>
-                          <Input
-                            cols="80"
-                            defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                            that two seat Lambo."
-                            placeholder="Here can be your description"
-                            rows="4"
-                            type="textarea"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </Form>
-                </CardBody>
-                <CardFooter>
-                  <Button className="btn-fill" color="primary" type="submit">
-                    Save
-                  </Button>
-                </CardFooter>
-              </Card>
-            </Col>
-            <Col md="4">
-              <Card className="card-user">
-                <CardBody>
-                  <CardText />
-                  <div className="author">
-                    <div className="block block-one" />
-                    <div className="block block-two" />
-                    <div className="block block-three" />
-                    <div className="block block-four" />
-                    <a href="#pablo" onClick={e => e.preventDefault()}>
-                      <img
-                        alt="..."
-                        className="avatar"
-                        src={require("assets/img/emilyz.jpg")}
-                      />
-                      <h5 className="title">Mike Andrew</h5>
-                    </a>
-                    <p className="description">Ceo/Co-Founder</p>
-                  </div>
-                  <div className="card-description">
-                    Do not be scared of the truth because we need to restart the
-                    human foundation in truth And I love you like Kanye loves
-                    Kanye I love Rick Owens’ bed design but the back is...
-                  </div>
-                </CardBody>
-                <CardFooter>
-                  <div className="button-container">
-                    <Button className="btn-icon btn-round" color="facebook">
-                      <i className="fab fa-facebook" />
-                    </Button>
-                    <Button className="btn-icon btn-round" color="twitter">
-                      <i className="fab fa-twitter" />
-                    </Button>
-                    <Button className="btn-icon btn-round" color="google">
-                      <i className="fab fa-google-plus" />
-                    </Button>
-                  </div>
-                </CardFooter>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-      </>
-    );
-  }
+                </div>
+            </>
+        );
+    }
 }
 
-export default UserProfile;
+
+export default ViewAmbulanceTimeSlot;
