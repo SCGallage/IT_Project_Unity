@@ -12,7 +12,7 @@ import {
     Col, DropdownItem, DropdownMenu, DropdownToggle,
     Form,
     FormGroup,
-    Input,
+    Input, Label,
     Row, UncontrolledDropdown
 } from "reactstrap";
 import {ListEmployeeComponent} from "./ListEmployee";
@@ -107,9 +107,8 @@ class Employee extends React.Component {
         this.changePasswordHandler = this.changePasswordHandler.bind(this);
 
         this.saveEmployee = this.saveEmployee.bind(this);
-        //this.enableField = this.enableField.bind(this);
+        this.enableField = this.enableField.bind(this);
         this.baseState = this.state;
-
 
     }
 
@@ -213,37 +212,38 @@ class Employee extends React.Component {
     }
 
 
-    // enableField  = () =>
-    // {
-    //     let checkBox = document.getElementById("exampleRadios11");
-    //     let checkBox3 = document.getElementById("exampleRadios12");
-    //     if (checkBox.checked === false)
-    //     {
-    //         console.log("ccc")
-    //         document.getElementById("bsalary").disabled = true;
-    //     }
-    //
-    //     if (checkBox.checked === true)
-    //     {
-    //         console.log("ddd")
-    //         document.getElementById("bsalary").disabled = false;
-    //
-    //     }
-    //     if (checkBox3.checked === false)
-    //     {
-    //         console.log("aaa")
-    //         document.getElementById("appointfee").disabled = true;
-    //
-    //     }
-    //
-    //     if (checkBox3.checked === true)
-    //     {
-    //         console.log("bbb")
-    //         document.getElementById("appointfee").disabled = false;
-    //     }
-    //
-    //
-    // }
+    enableField  = () =>
+    {
+        let checkBox = document.getElementById("exampleRadios11");
+        let checkBox3 = document.getElementById("exampleRadios12");
+        console.log("aaaaaaa")
+        if (checkBox.checked === false)
+        {
+            console.log("ccc")
+            document.getElementById("bsalary").disabled = true;
+        }
+
+        if (checkBox.checked === true)
+        {
+            console.log("ddd")
+            document.getElementById("bsalary").disabled = false;
+
+        }
+        if (checkBox3.checked === false)
+        {
+            console.log("aaa")
+            document.getElementById("appointfee").disabled = true;
+
+        }
+
+        if (checkBox3.checked === true)
+        {
+            console.log("bbb")
+            document.getElementById("appointfee").disabled = false;
+        }
+
+
+    }
 
 
 
@@ -294,6 +294,7 @@ class Employee extends React.Component {
         const { isPasswordShown } = this.state;
         const { errors } = this.state;
         return (
+
             <div className="content">
 
                 <Breadcrumb>
@@ -309,6 +310,15 @@ class Employee extends React.Component {
                             </CardHeader>
                             <CardBody>
                                 <Form>
+                                    <Label>Doctor &nbsp; </Label><input type="checkbox"
+                                           id="exampleRadios12" onClick={this.enableField.bind(this)}/>
+
+                                    <Label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Other Employee &nbsp;</Label><input type="checkbox"
+                                                         id="exampleRadios11" onClick={this.enableField.bind(this)}/>
+
+                                <hr/>
+
+
                                     <Row>
                                         <Col className="pr-md-1" md="4">
                                             <FormGroup>
@@ -451,6 +461,7 @@ class Employee extends React.Component {
                                                     placeholder="Rs." id = "bsalary"
                                                     type="number"
                                                     value={this.state.bsalary} onChange={this.changeBasicsalaryHandler}
+                                                    disabled
                                                 />
                                             </FormGroup>
                                         </Col>
@@ -460,6 +471,7 @@ class Employee extends React.Component {
                                                 <Input placeholder="Rs." id = "appointfee"
                                                        type="number"
                                                        value={this.state.appointfee} onChange={this.changeAppointfeeHandler}
+                                                       disabled
                                                 />
                                             </FormGroup>
                                         </Col>
@@ -525,6 +537,7 @@ class Employee extends React.Component {
                         </Card>
                     </Col>
                     <Col md="4">
+
                         <Card className="card-user">
                             <CardBody>
                                 <CardText />
