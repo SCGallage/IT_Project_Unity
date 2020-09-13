@@ -50,7 +50,6 @@ function validate(firstname,lastname, email,designation,username, password) {
     if(format2.test(password) !== true){
         errors.push("Password should contain at least one numeric digit, one uppercase and one lowercase letter");
     }
-
     return errors;
 }
 
@@ -83,7 +82,6 @@ class Employee extends React.Component {
             username : '',
             password : '',
             errors: [],
-            visible: true,
             formErrors: {
                 firstname: "",
                 lastname: "",
@@ -507,9 +505,6 @@ class Employee extends React.Component {
                                                     className="fa fa-eye password-icon"
                                                     onClick={this.togglePasswordVisiblity}
                                                 />
-                                                {formErrors.password.length > 0 && (
-                                                    <span className="errorMessage">{formErrors.password}</span>
-                                                )}
                                             </FormGroup>
                                         </Col>
                                     </Row>
@@ -522,8 +517,9 @@ class Employee extends React.Component {
                                 <Button className="btn-fill" onClick={this.saveEmployee} color="primary" type="submit">
                                     Save
                                 </Button>
-                                <Button className="btn-fill" onClick={this.handleReset.bind(this)}color="primary" type="reset">
-                                    Reset
+                                <Button className="btn-fill"  color="primary" type="reset">Reset
+                                    <a href="/admin/add-employees">.....</a>
+
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -548,7 +544,7 @@ class Employee extends React.Component {
                                     <p className="description">Founder</p>
                                 </div>
                                 <div className="card-description">
-                                    Treet Employees Like They Make A Difference And They Will
+                                    Treat Employees Like They Make A Difference And They Will
                                 </div>
                             </CardBody>
                             <CardFooter>

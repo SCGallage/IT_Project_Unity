@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import EmployeeService from '../Services/EmployeeService';
 import {
+    Alert,
     Breadcrumb,
     BreadcrumbItem, Button,
     Card,
@@ -13,6 +14,48 @@ import {
     Input,
     Row, UncontrolledDropdown
 } from "reactstrap";
+
+function validate(firstname,lastname, email,mobile,designation,username, password) {
+    const errors = [];
+    var format = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    var format2 = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+    var format3 = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+    if (firstname.length === 0) {
+        errors.push(" First Name can't be empty");
+    }
+
+    if (lastname.length === 0) {
+        errors.push(" Last Name can't be empty");
+    }
+
+    if(email.length === 0){
+        errors.push("Email cant be empty")
+    }
+    if(format3.test(mobile) !== true){
+        errors.push("Invalid mobile number");
+    }
+    if(format.test(email) !== true){
+        errors.push("Invalid email address");
+    }
+
+    if(designation.length === 0){
+        errors.push("Designation can't be empty")
+    }
+
+    if(username.length === 0){
+        errors.push("Username can't be empty")
+    }
+
+    if (password.length < 6) {
+        errors.push("Password should be at least 6 characters long");
+    }
+
+    if(format2.test(password) !== true){
+        errors.push("Password should contain at least one numeric digit, one uppercase and one lowercase letter");
+    }
+    return errors;
+}
 
 export class UpdateEmployee extends Component {
     constructor(props) {
@@ -30,8 +73,7 @@ export class UpdateEmployee extends Component {
             bsalary : '',
             username : '',
             password : '',
-
-
+            errors: [],
         }
         this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this);
         this.changeLastNameHandler = this.changeLastNameHandler.bind(this);
@@ -73,8 +115,30 @@ export class UpdateEmployee extends Component {
         });
     }
 
+    state = {
+        isPasswordShown: false
+    };
+
+    togglePasswordVisiblity = () => {
+        const { isPasswordShown } = this.state;
+        this.setState({ isPasswordShown: !isPasswordShown });
+    };
+
+
+
     updateEmployee = (e) => {
         e.preventDefault();
+
+
+        const { firstname, lastname, email,mobile,designation,username, password } = this.state;
+
+        const errors = validate(firstname,lastname, email,mobile,designation,username, password);
+        if (errors.length > 0) {
+            this.setState({ errors });
+            console.log(errors)
+            return;
+        }
+
         let employee = {
             firstname : this.state.firstname,
             lastname : this.state.lastname,
@@ -151,6 +215,8 @@ export class UpdateEmployee extends Component {
     }
 
     render() {
+        const { isPasswordShown } = this.state;
+        const { errors } = this.state;
         return (
             <div className="content">
 
@@ -177,8 +243,11 @@ export class UpdateEmployee extends Component {
                                                     //placeholder="Company"
                                                     type="text"
                                                     value={this.state.firstname}
+                                                    onChange={evt => this.setState({ firstname: evt.target.value })}
                                                     onChange={this.changeFirstNameHandler}
+                                                    noValidate
                                                 />
+
                                             </FormGroup>
                                         </Col>
                                         <Col className="px-md-1" md="4">
@@ -189,6 +258,8 @@ export class UpdateEmployee extends Component {
                                                     //placeholder="Lastname"
                                                     type="text"
                                                     value={this.state.lastname}
+                                                    onChange={evt => this.setState({ lastname: evt.target.value })}
+                                                    noValidate
                                                     onChange={this.changeLastNameHandler}
                                                 />
                                             </FormGroup>
@@ -201,6 +272,8 @@ export class UpdateEmployee extends Component {
                                                 <Input placeholder="example@gmail.com"
                                                        type="email"
                                                        value={this.state.email}
+                                                       onChange={evt => this.setState({ email: evt.target.value })}
+                                                        noValidate
                                                        onChange={this.changeEmailHandler}
                                                 />
                                             </FormGroup>
@@ -227,6 +300,8 @@ export class UpdateEmployee extends Component {
                                                     //placeholder="Phone"
                                                     type="phone"
                                                     value={this.state.mobile}
+                                                    onChange={evt => this.setState({ firstname: evt.target.value })}
+                                                    noValidate
                                                     onChange={this.changeMobileHandler}
                                                 />
                                             </FormGroup>
@@ -269,7 +344,10 @@ export class UpdateEmployee extends Component {
                                             <FormGroup>
                                                 <label for="Designation">Designation</label>
                                                 <Input type="select" name="select" id="Designation"
-                                                       value={this.state.designation} onChange={this.changeDesignationHandler}>
+                                                       value={this.state.designation}
+                                                       onChange={evt => this.setState({ designation: evt.target.value })}
+                                                       noValidate
+                                                       onChange={this.changeDesignationHandler}>
                                                     <option>Doctor</option>
                                                     <option>Admin</option>
                                                     <option>Nurse</option>
@@ -304,25 +382,36 @@ export class UpdateEmployee extends Component {
                                             <FormGroup>
                                                 <label>User Name</label>
                                                 <Input
-                                                    // defaultValue="Username"
-                                                    // placeholder="Username"
                                                     type="text"
-                                                    value={this.state.username} onChange={this.changeUsernameHandler}
+                                                    value={this.state.username}
+                                                    onChange={evt => this.setState({ username: evt.target.value })}
+                                                    noValidate
+                                                    onChange={this.changeUsernameHandler}
                                                 />
                                             </FormGroup>
                                         </Col>
                                         <Col className="pl-md-1" md="6">
                                             <FormGroup>
-                                                <label>Password</label>
+                                                <label>Password *</label>
                                                 <Input
-                                                    //defaultValue="Andrew"
-                                                    //placeholder="Password"
-                                                    type="password"
-                                                    value={this.state.password} onChange={this.changePasswordHandler}
+                                                    type={isPasswordShown ? "text" : "password"}
+                                                    value={this.state.password}
+                                                    onChange={evt => this.setState({ password: evt.target.value })}
+                                                    noValidate
+                                                    onChange={this.changePasswordHandler}
+                                                />
+                                                <i
+                                                    className="fa fa-eye password-icon"
+                                                    onClick={this.togglePasswordVisiblity}
                                                 />
                                             </FormGroup>
                                         </Col>
                                     </Row>
+
+                                    {errors.map(error => (
+                                        <Alert color="default" key={error}> {error}</Alert>
+                                    ))}
+
                                 </Form>
                             </CardBody>
                             <CardFooter>
