@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import EmployeeService from "../Services/EmployeeService";
 import "assets/css/employee.css";
 import {
+    Alert,
     Breadcrumb,
     BreadcrumbItem, Button,
     Card,
@@ -17,37 +18,50 @@ import {
 import {ListEmployeeComponent} from "./ListEmployee";
 
 
+function validate(firstname,lastname, email,designation,username, password) {
+    const errors = [];
+    var format = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+    var format2 = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+
+    if (firstname.length === 0) {
+        errors.push(" First Name can't be empty");
+    }
+
+    if (lastname.length === 0) {
+        errors.push(" Last Name can't be empty");
+    }
+
+    if(email.length === 0){
+        errors.push("Email cant be empty")
+    }
+
+    if(designation.length === 0){
+        errors.push("Designation can't be empty")
+    }
+
+    if(username.length === 0){
+        errors.push("Username can't be empty")
+    }
+
+    if (password.length < 6) {
+        errors.push("Password should be at least 6 characters long");
+    }
+
+    if(format2.test(password) !== true){
+        errors.push("Password should contain at least one numeric digit, one uppercase and one lowercase letter");
+    }
+
+    return errors;
+}
+
+
 const emailRegex = RegExp(
     /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-);
-
-const passRegex = RegExp(
-    /^([@#](?=[^aeiou]{7,13}$)(?=[[:alnum:]]{7,13}$)(?=.*[A-Z]{1,}.*$).+)$/
 );
 
 const phoneRegex = RegExp(
     /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
 );
-
-
-const formValid = ({ formErrors, ...rest }) => {
-    let valid = true;
-
-    // validate form errors being empty
-    Object.values(formErrors).forEach(val => {
-        console.log("Fields blank");
-        val.length > 0 && (valid = false);
-    });
-
-    // validate the form was filled out
-    Object.values(rest).forEach(val => {
-        console.log("Sucessfully filled");
-        val === null && (valid = false);
-    });
-
-    return valid;
-};
-
 
 class Employee extends React.Component {
 
@@ -68,9 +82,11 @@ class Employee extends React.Component {
             qualification : '',
             username : '',
             password : '',
+            errors: [],
+            visible: true,
             formErrors: {
-                firstName: "",
-                lastName: "",
+                firstname: "",
+                lastname: "",
                 email: "",
                 mobile : '',
                 password: "",
@@ -111,6 +127,16 @@ class Employee extends React.Component {
 
     saveEmployee = (e) => {
         e.preventDefault();
+
+        const { firstname, lastname, email,designation,username, password } = this.state;
+
+        const errors = validate(firstname,lastname, email,designation,username, password);
+        if (errors.length > 0) {
+            this.setState({ errors });
+            console.log(errors)
+            return;
+        }
+
         let employee = {
             firstname : this.state.firstname,
             lastname : this.state.lastname,
@@ -127,21 +153,6 @@ class Employee extends React.Component {
             password : this.state.password
         };
         console.log('employee => ' + JSON.stringify(employee));
-
-
-        if (formValid(this.state)) {
-            console.log(`
-        --SUBMITTING--
-        First Name: ${this.state.firstName}
-        Last Name: ${this.state.lastName}
-        Email: ${this.state.email}
-        PhONE: ${this.state.mobile}
-        Password: ${this.state.password}
-        username : ${this.state.username}
-      `);
-        } else {
-            console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
-        }
 
         EmployeeService.createEmployee(employee).then(res => {
             this.props.history.push('/admin/employees');
@@ -248,6 +259,15 @@ class Employee extends React.Component {
         let formErrors = { ...this.state.formErrors };
 
         switch (name) {
+            case "firstname":
+                formErrors.firstname =
+                    value.length < 3 ? "minimum 3 characters required" : "";
+                break;
+
+            case "lastname" :
+                formErrors.lastname =
+                    value.length < 3 ? "minimum 3 characters required" : "";
+                break;
 
             case "username":
                 formErrors.username =
@@ -263,11 +283,6 @@ class Employee extends React.Component {
                     ? ""
                     : "invalid phone number";
                 break;
-            case "password":
-                formErrors.password = passRegex.test(value)
-                    ? ""
-                    : "invalid password";
-                break;
             default:
                 break;
         }
@@ -276,10 +291,10 @@ class Employee extends React.Component {
     };
 
 
-
     render() {
         const { formErrors } = this.state;
         const { isPasswordShown } = this.state;
+        const { errors } = this.state;
         return (
             <div className="content">
 
@@ -302,9 +317,16 @@ class Employee extends React.Component {
                                                 <label>First Name *</label>
                                                 <Input
                                                     type="text"
-                                                    value={this.state.firstname}
-                                                    onChange={this.changeFirstNameHandler}
+                                                    onChange={evt => this.setState({ firstname: evt.target.value })}
+                                                    //value={this.state.firstname}
+                                                    name="firstname"
+                                                    noValidate
+                                                    onChange={this.handleChange}
                                                 />
+                                                {formErrors.firstname.length > 0 && (
+                                                    <span className="errorMessage">{formErrors.firstname}</span>
+                                                )}
+
                                             </FormGroup>
                                         </Col>
 
@@ -313,9 +335,15 @@ class Employee extends React.Component {
                                                 <label>Last Name *</label>
                                                 <Input
                                                     type="text"
-                                                    value={this.state.lastname}
-                                                    onChange={this.changeLastNameHandler}
+                                                    //value={this.state.lastname}
+                                                    onChange={evt => this.setState({ lastname: evt.target.value })}
+                                                    name="lastname"
+                                                    noValidate
+                                                    onChange={this.handleChange}
                                                 />
+                                                {formErrors.lastname.length > 0 && (
+                                                    <span className="errorMessage">{formErrors.lastname}</span>
+                                                )}
                                             </FormGroup>
                                         </Col>
 
@@ -368,19 +396,19 @@ class Employee extends React.Component {
                                         <Col className="pl-md-1" md="4">
                                             <FormGroup>
                                                 <label>Gender</label><br/>
-                                            <FormGroup check inline className="form-check-radio">
+                                                <FormGroup check inline className="form-check-radio">
 
-                                                <label className="form-check-label">
-                                                    <Input type="radio" name="gender" id="exampleRadios11"
-                                                        // value={this.state.gender} onChange={this.changeGenderHandler}
-                                                        // defaultChecked/>Male
-                                                           value="Male" onChange={this.changeGenderHandler}/>Male
+                                                    <label className="form-check-label">
+                                                        <Input type="radio" name="gender" id="exampleRadios11"
+                                                            // value={this.state.gender} onChange={this.changeGenderHandler}
+                                                            // defaultChecked/>Male
+                                                               value="Male" onChange={this.changeGenderHandler}/>Male
 
-                                                    <span className="form-check-sign"></span>
-                                                </label>
-                                                <label className="form-check-label">
-                                                    <Input type="radio" name="gender" id="exampleRadios12"
-                                                           value="Female" onChange={this.changeGenderHandler}/>
+                                                        <span className="form-check-sign"></span>
+                                                    </label>
+                                                    <label className="form-check-label">
+                                                        <Input type="radio" name="gender" id="exampleRadios12"
+                                                               value="Female" onChange={this.changeGenderHandler}/>
                                                         Female
                                                         <span className="form-check-sign"></span>
                                                     </label>
@@ -404,7 +432,9 @@ class Employee extends React.Component {
                                             <FormGroup>
                                                 <label for="Designation">Designation *</label>
                                                 <Input type="select" name="select" id="Designation"
-                                                       value={this.state.designation} onChange={this.changeDesignationHandler}>
+                                                       value={this.state.designation}
+                                                       onChange={evt => this.setState({ designation: evt.target.value })}
+                                                       onChange={this.changeDesignationHandler}>
                                                     <option>Select....</option>
                                                     <option id = "doctor">Doctor</option>
                                                     <option id = "admin">Admin</option>
@@ -455,6 +485,8 @@ class Employee extends React.Component {
                                                 <Input
                                                     type="text"
                                                     //value={this.state.username} onChange={this.changeUsernameHandler}
+                                                    onChange={evt => this.setState({ username: evt.target.value })}
+
                                                     name="username"
                                                     noValidate
                                                     onChange={this.handleChange}
@@ -481,6 +513,9 @@ class Employee extends React.Component {
                                             </FormGroup>
                                         </Col>
                                     </Row>
+                                    {errors.map(error => (
+                                        <Alert color="default" key={error}> {error}</Alert>
+                                    ))}
                                 </Form>
                             </CardBody>
                             <CardFooter>
