@@ -29,10 +29,10 @@ class AddSalary extends React.Component {
 
 
                 <Row>
-                    <Col md="8">
+                    <Col md="7">
                         <Card>
                             <CardHeader>
-                                <h5 className="title">Calculate Salary</h5>
+                                <h5 className="title">Salary</h5>
                             </CardHeader>
                             <CardBody>
                                 <Form>
@@ -112,7 +112,7 @@ class AddSalary extends React.Component {
                             </CardBody>
                         </Card>
                     </Col>
-                    <Col md="4">
+                    <Col md="5">
                         <Card className="card-user">
                             <CardBody>
                                 <CardText />
@@ -121,13 +121,26 @@ class AddSalary extends React.Component {
                                     <div className="block block-two" />
                                     <div className="block block-three" />
                                     <div className="block block-four" />
-                                    <Button className="btn-fill" color="primary" type="submit">
-                                        Calculate Salary
-                                    </Button>
 
+                                        <img
+                                            alt="..."
+                                            className="avatar"
+                                            src={require("assets/img/sal.jpg")}
+                                        />
                                 </div>
+                                <Button className="btn-fill" color="primary" type="submit">
+                                    Calculate Salary
+                                </Button>
+&nbsp; &nbsp; &nbsp; &nbsp;
+
+                                <Button className="btn-fill" color="primary" type="submit">
+                                    Salary List
+                                    <a href="/admin/salary-list">...</a>
+                                </Button>
+
 
                             </CardBody>
+
                         </Card>
                     </Col>
                 </Row>

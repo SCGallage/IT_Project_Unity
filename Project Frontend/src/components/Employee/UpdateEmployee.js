@@ -69,6 +69,7 @@ export class UpdateEmployee extends Component {
             mobile : '',
             gender : '',
             designation : '',
+            qualification : '',
             appointfee : '',
             bsalary : '',
             username : '',
@@ -83,6 +84,7 @@ export class UpdateEmployee extends Component {
         this.changeMobileHandler = this.changeMobileHandler.bind(this);
         this.changeGenderHandler = this.changeGenderHandler.bind(this);
         this.changeDesignationHandler = this.changeDesignationHandler.bind(this);
+        this.changeQualificationHandler = this.changeQualificationHandler.bind(this);
         this.changeAppointfeeHandler = this.changeAppointfeeHandler.bind(this);
         this.changeBasicsalaryHandler = this.changeBasicsalaryHandler.bind(this);
         this.changeUsernameHandler = this.changeUsernameHandler.bind(this);
@@ -106,6 +108,7 @@ export class UpdateEmployee extends Component {
                 dob : employee.dob,
                 mobile : employee.mobile,
                 gender : employee.gender,
+                qualification : employee.qualification,
                 designation : employee.designation,
                 appointfee : employee.appointfee,
                 bsalary : employee.bsalary,
@@ -148,6 +151,7 @@ export class UpdateEmployee extends Component {
             mobile : this.state.mobile,
             gender : this.state.gender,
             designation : this.state.designation,
+            qualification: this.state.qualification,
             appointfee : this.state.appointfee,
             bsalary : this.state.bsalary,
             username : this.state.username,
@@ -188,6 +192,10 @@ export class UpdateEmployee extends Component {
 
     changeGenderHandler = (event) => {
         this.setState({gender : event.target.value});
+    }
+
+    changeQualificationHandler = (event) => {
+        this.setState({qualification : event.target.value});
     }
 
     changeDesignationHandler = (event) => {
@@ -378,7 +386,19 @@ export class UpdateEmployee extends Component {
                                         </Col>
                                     </Row>
                                     <Row>
-                                        <Col className="pr-md-1" md="6">
+
+                                        <Col className="pr-md-1" md="4">
+                                            <FormGroup>
+                                                <label>Qualification</label>
+                                                <Input
+                                                    type="text"
+                                                    value={this.state.qualification}
+                                                    onChange={this.changeQualificationHandler}
+                                                />
+                                            </FormGroup>
+                                        </Col>
+
+                                        <Col className="pr-md-1" md="5">
                                             <FormGroup>
                                                 <label>User Name</label>
                                                 <Input
@@ -390,7 +410,7 @@ export class UpdateEmployee extends Component {
                                                 />
                                             </FormGroup>
                                         </Col>
-                                        <Col className="pl-md-1" md="6">
+                                        <Col className="pl-md-1" md="5">
                                             <FormGroup>
                                                 <label>Password *</label>
                                                 <Input
