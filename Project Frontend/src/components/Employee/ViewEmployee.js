@@ -26,6 +26,7 @@ class ViewEmployee extends Component {
 
                 <Breadcrumb>
                     <BreadcrumbItem><a href="/admin/dashboard#">Dashboard</a></BreadcrumbItem>
+                    <BreadcrumbItem><a href="/admin/employees#">Employee List</a></BreadcrumbItem>
                     <BreadcrumbItem active>Display Employee</BreadcrumbItem>
                 </Breadcrumb>
             <div>
