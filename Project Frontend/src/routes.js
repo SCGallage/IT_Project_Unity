@@ -31,6 +31,7 @@ import ViewEmployee from "./components/Employee/ViewEmployee";
 import SearchEmployeeName from "./components/Employee/SearchEmployeeName";
 import SearchEmployeeDesignation from "./components/Employee/SearchEmployeeDesignation";
 import AddSalary from "./components/Employee/AddSalary";
+import ListSalary from "./components/Employee/ListSalary";
 
 var routes = [
   {
@@ -97,7 +98,13 @@ var routes = [
     rtlName: "ار تي ال",
     component: UpdateEmployee,
     layout: "/admin"
-  }
+  },
+  {
+    path: "/salary-list",
+    rtlName: "ار تي ال",
+    component: ListSalary,
+    layout: "/admin"
+  },
 
 
 ];
