@@ -28,17 +28,24 @@ import "assets/scss/black-dashboard-react.scss";
 import "assets/demo/demo.css";
 import "assets/css/nucleo-icons.css";
 import {exact} from "prop-types";
+import {Provider} from "react-redux";
+import {PersistGate} from "redux-persist/integration/react";
+import {store,persistor} from "./Redux/store";
 
 const hist = createBrowserHistory();
 
 ReactDOM.render(
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
   <Router history={hist}>
     <Switch>
-        <Route path="/nurse" render={props => <NurseLayout {...props} />} />
+      <Route path="/nurse" render={props => <NurseLayout {...props} />} />
       <Route path="/admin" render={props => <AdminLayout {...props} />} />
       <Route path="/rtl" render={props => <RTLLayout {...props} />} />
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
-  </Router>,
+  </Router>
+      </PersistGate>
+    </Provider>,
   document.getElementById("root")
 );

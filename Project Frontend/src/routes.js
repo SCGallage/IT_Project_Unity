@@ -27,29 +27,29 @@ import ItemType from "./views/ItemType";
 import Item from "./views/Item";
 import AddItem from "./views/AddItem";
 import ItemDetails from "./views/ItemDetails";
+import CheckOut from "./views/CheckOut";
 
 var routes = [
   {
     path: "/inventory",
-    name: "Item Details",
+    name: "Inventory",
     rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
+    icon: "tim-icons icon-app",
     component: ItemDetails,
     layout: "/nurse",
-    invisible: true,
     exact : true
   },
   {
     path: "/inventory/addItem",
     name: "Add Item",
     rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
+    icon: "tim-icons icon-notes",
     component: AddItem,
     layout: "/nurse"
   },
   {
     path: "/inventory/:id",
-    name: "Item",
+    name: "Item Details",
     rtlName: "ار تي ال",
     icon: "tim-icons icon-world",
     component: Item,
@@ -62,6 +62,31 @@ var routes = [
     rtlName: "ار تي ال",
     icon: "tim-icons icon-world",
     component: ItemType,
+    layout: "/nurse",
+    invisible: true
+  },
+  {
+    path: "/inventory/items/:type",
+    name: "Add Patient",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-single-02",
+    component: ItemType,
+    layout: "/nurse",
+  },
+  {
+    path: "/inventory/items/:type",
+    name: "Patient Details",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-sound-wave",
+    component: ItemType,
+    layout: "/nurse"
+  },
+  {
+    path: "/checkout",
+    name: "Check Out",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-sound-wave",
+    component: CheckOut,
     layout: "/nurse",
     invisible: true
   }

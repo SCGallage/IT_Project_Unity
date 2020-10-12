@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { useFormik } from "formik";
+import {useHistory} from 'react-router-dom'
 // react plugin for creating notifications over the dashboard
 
 // reactstrap components
@@ -24,6 +25,7 @@ import FormGroup from "reactstrap/es/FormGroup";
 
 function Item({match}) {
 
+    const history = useHistory()
     const [modalDemo, setmodalDemo] = useState(false);
     const [posts, setPosts] = useState(0);
 
@@ -46,13 +48,19 @@ function Item({match}) {
             expDate : posts.expDate,
             itemType : posts.itemType,
             dose : posts.dose,
-            price : posts.price,
             noOfItems : posts.noOfItems,
+            price : posts.price,
             description : posts.description
         },
         onSubmit : values => {
             console.log('Form Data',values)
             axios.put(`http://localhost:8080/inventoryItems/update/${match.params.id}`,values)
+                .then(res => {
+                        history.push({
+                            pathname: '/nurse/inventory'
+                        })
+                    }
+                )
             setmodalDemo(false)
         }
     })
@@ -108,11 +116,11 @@ function Item({match}) {
                                         </Row>
                                         <Row>
                                             <Col>
-                                                <Label for="price">Item Inventory</Label>
+                                                <Label for="price">Price</Label>
                                                 <Input type="text" placeholder="" name="price" defaultValue={posts.price} onChange={formik.handleChange}/>
                                             </Col>
                                             <Col>
-                                                <Label for="noOfItems">Price</Label>
+                                                <Label for="noOfItems">Item Inventory</Label>
                                                 <Input type="text" placeholder="" name="noOfItems" defaultValue={posts.noOfItems} onChange={formik.handleChange}/>
                                             </Col>
                                         </Row>
@@ -133,7 +141,7 @@ function Item({match}) {
                                         <Modal isOpen={modalDemo} >
                                             <div className="modal-header">
                                                 <h5 className="modal-title" id="exampleModalLabel">
-                                                    Modal title
+                                                    Update Item
                                                 </h5>
                                                 <button
                                                     type="button"
