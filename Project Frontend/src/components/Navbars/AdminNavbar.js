@@ -20,6 +20,12 @@ import axios from "axios";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 
+import jsPDF from 'jspdf'; import 'jspdf-autotable';
+import 'jspdf'
+import 'jspdf-autotable'
+
+import {connect} from "react-redux";
+
 // reactstrap components
 import {
   Button,
@@ -40,28 +46,100 @@ import {
   Modal
 } from "reactstrap";
 import Footer from "../Footer/Footer";
+import Table from "reactstrap/es/Table";
+import {rmvCart} from "../../Redux/cartAction";
+import NotificationAlert from "react-notification-alert";
+
+var options = {};
+options = {
+  place: 'tc',
+  message: (
+      <div>
+        <div>
+          Item Removed From The Cart!
+        </div>
+      </div>
+  ),
+  type: "danger",
+  icon: "now-ui-icons ui-1_bell-53",
+  autoDismiss: 3
+}
+
 
 class AdminNavbar extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
     this.state = {
       collapseOpen: false,
       modalSearch: false,
       color: "navbar-transparent",
       albums: [],
-      expired: []
+      expired: [],
+      search: '',
+      cartTotal: 0,
+      stock:[]
     };
+    this.createReport = this.createReport.bind(this)
   }
+
+
+  updateSearch(event){
+    this.setState({
+      search: event.target.value.substr(0,20)
+    })
+  }
+
+  myFunc(itemId, price, quantity){
+    this.refs.notify.notificationAlert(options);
+    this.props.rmvCart(itemId, price, quantity)
+  }
+
+  createReport(){
+
+    const unit = "pt";
+    const size = "A3"; // Use A1, A2, A3 or A4
+    const orientation = "portrait"; // portrait or landscape
+    const marginLeft = 40;
+    const doc = new jsPDF( orientation, unit, size );
+
+    let itemList = [];
+    console.log("Item",this.state.expired);
+    itemList = this.state.expired.map((item) =>
+      [item.itemID,item.displayName,item.manufacturer,item.price,item.mfgDate,item.expDate,item.dose,item.itemType,item.noOfItems]
+    );
+
+    console.log("Item List",itemList);
+
+    doc.setFontSize( 20 );
+    require('jspdf-autotable');
+
+    doc.autoTable( {
+      head: [['Item ID', 'Display Name', 'Manufacturer','Price','Mfg. Date','Exp. Date','Dose','Item Type','Inventory']],
+      body: itemList,
+    } );
+
+    const current = new Date();
+    let fname  = current.getFullYear()+''+(current.getMonth()+1)+current.getDate()+current.getTime();
+    /*doc.text("Hello World!",10,10);*/
+
+    require('jspdf-autotable')
+    doc.save(fname+".pdf");
+  }
+
   componentDidMount() {
     axios.get("http://localhost:8080/expiring")
         .then(response => {
               this.setState({albums: response.data})
               console.log(response)
-            }
-        )
+        })
     axios.get("http://localhost:8080/expired")
         .then(res => {
           this.setState({expired: res.data})
+        })
+    axios.get("http://localhost:8080/runout")
+        .then(r => {
+          this.setState({stock: r.data})
+          console.log("Ran Out",r)
         })
     window.addEventListener("resize", this.updateColor);
   }
@@ -103,13 +181,14 @@ class AdminNavbar extends React.Component {
   };
 
   CreateURL(para){
-    return "http://localhost:3000/admin/deleteItem/"+para
+    return "http://localhost:3000/nurse/inventory/"+para
   }
 
   render() {
     const { albums } =this.state
     return (
       <>
+        <NotificationAlert ref="notify"/>
         <Navbar
           className={classNames("navbar-absolute", this.state.color)}
           expand="lg"
@@ -155,7 +234,7 @@ class AdminNavbar extends React.Component {
                 <InputGroup className="search-bar">
                   <Form inline>
                   <FormGroup className="no-border">
-                    <Input type="text" placeholder="Search"/>
+                    <Input type="text" value={this.state.search} onChange = {this.updateSearch.bind(this)} placeholder="Search"/>
                   </FormGroup>
                   <Button
                     color="link"
@@ -166,6 +245,31 @@ class AdminNavbar extends React.Component {
                   </Form>
                 </InputGroup>
                 )}
+                <UncontrolledDropdown nav>
+                  <DropdownToggle
+                      caret
+                      color="default"
+                      data-toggle="dropdown"
+                      nav
+                  >
+                    <div className="notification d-none d-lg-block d-xl-block" />
+                    <i className="tim-icons icon-bus-front-12" />
+                    <p className="d-lg-none">Notifications</p>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-black" right tag="ul">
+                    {
+                      this.state.stock.length ?
+                          this.state.stock.map(p =>
+                              <div key={p.itemID}>
+                                <NavLink tag="li" >
+                                  <DropdownItem className="nav-item" href={this.CreateURL(p.itemID)}>
+                                    {p.displayName} is running out!
+                                  </DropdownItem>
+                                </NavLink>
+                              </div>):"No posts to show"
+                    }
+                  </DropdownMenu>
+                </UncontrolledDropdown>
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret
@@ -209,11 +313,31 @@ class AdminNavbar extends React.Component {
                               <div key={post.itemID}>
                                 <NavLink tag="li" >
                                   <DropdownItem className="nav-item" href={this.CreateURL(post.itemID)}>
-                                    {post.displayName} is nearing expiration click here to visit the item.
+                                    {post.displayName} has expired! Click here to visit the item.
                                   </DropdownItem>
                                 </NavLink>
                               </div>):"No posts to show"
                     }
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+                <UncontrolledDropdown nav>
+                  <DropdownToggle
+                      caret
+                      color="default"
+                      data-toggle="dropdown"
+                      nav
+                      onClick={e => e.preventDefault()}
+                  >
+                    <i className="tim-icons icon-paper" />
+                    <span className="d-lg-none d-md-block">Shopping Cart</span>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-black" right tag="ul">
+                    <DropdownItem onClick={this.createReport} className="nav-item">
+                      Generate Report On Items Nearing Expiration
+                    </DropdownItem>
+                    <DropdownItem className="nav-item" href="http://localhost:3000/nurse/orders">
+                      See Order List
+                    </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <UncontrolledDropdown nav>
@@ -227,17 +351,53 @@ class AdminNavbar extends React.Component {
                     <i className="tim-icons icon-cart" />
                     <span className="d-lg-none d-md-block">Shopping Cart</span>
                   </DropdownToggle>
-                  <DropdownMenu className="dropdown-navbar" right tag="ul">
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">Profile</DropdownItem>
-                    </NavLink>
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">Settings</DropdownItem>
-                    </NavLink>
-                    <DropdownItem divider tag="li" />
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item">Log out</DropdownItem>
-                    </NavLink>
+                  <DropdownMenu className="dropdown-black" right tag="ul">
+                      <DropdownItem className="nav-item">
+                        <Table>
+                          <thead>
+                          <tr>
+                            <th>Item ID</th>
+                            <th className="text-left">Item Name</th>
+                            <th>Quantity</th>
+                            <th className="text-right">Price</th>
+                            <th className="text-right">Total</th>
+                            <th></th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          {
+                            this.props.shoppingCart.length ? this.props.shoppingCart.map(obj =>
+                            <tr>
+                              <td key={obj.itemId}>{obj.itemId}</td>
+                              <td>{obj.name}</td>
+                              <td className="text-center">{obj.quantity}</td>
+                              <td className="text-right">Rs.{obj.price}</td>
+                              <td className="text-right">Rs.{obj.price*obj.quantity}</td>
+                              <td className="text-right"><Button onClick={() => this.myFunc(obj.itemId, obj.price, obj.quantity)} className="btn-icon btn-round" color="primary"
+                                                                 size="sm">
+                                <i className="fa fa-times"/>
+                              </Button></td>
+                            </tr>
+                            ):null
+                          }
+                          <tr>
+                              <td><b>Total</b></td>
+                              <td></td>
+                              <td></td>
+                              <td className="text-right"></td>
+                              <td className="text-right"><b>Rs.{this.props.total}</b></td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </DropdownItem>
+                    <DropdownItem className="nav-item">
+                      <Table>
+                      <tr>
+                        <td><Button>Reset Cart</Button></td>
+                        <td><Button><a href="http://localhost:3000/nurse/checkout">Check Out</a></Button></td>
+                      </tr>
+                      </Table>
+                    </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
                 <UncontrolledDropdown nav>
@@ -295,4 +455,22 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+const mapStateToProps = state => {
+
+  return {
+    shoppingCart: state.shoppingCart,
+    total: state.total
+  }
+
+}
+
+const mapDispatchToProps = dispatch => {
+
+
+  return {
+    rmvCart: (itemId, price, quantity) => dispatch(rmvCart(itemId, price, quantity)),
+  }
+
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AdminNavbar);

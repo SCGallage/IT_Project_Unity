@@ -16,7 +16,7 @@
 
 */
 import React from "react";
-
+import axios from "axios";
 // reactstrap components
 import {
   Card,
@@ -28,7 +28,25 @@ import {
   Col
 } from "reactstrap";
 
-class Tables extends React.Component {
+class OrderList extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      orders:[]
+    }
+  }
+
+  componentDidMount() {
+
+    axios.get("http://localhost:8080/getorders")
+        .then(response => {
+          this.setState({
+            orders:response.data
+          })
+        })
+  }
+
   render() {
     return (
       <>
@@ -37,61 +55,29 @@ class Tables extends React.Component {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Simple Table</CardTitle>
+                  <CardTitle tag="h4">Order List</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Table className="tablesorter" responsive>
                     <thead className="text-primary">
                       <tr>
-                        <th>Name</th>
-                        <th>Country</th>
-                        <th>City</th>
-                        <th className="text-center">Salary</th>
+                        <th>Order ID</th>
+                        <th>Customer Name</th>
+                        <th>Card Type</th>
+                        <th>Purchase Date</th>
+                        <th className="text-center">Total</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Dakota Rice</td>
-                        <td>Niger</td>
-                        <td>Oud-Turnhout</td>
-                        <td className="text-center">$36,738</td>
-                      </tr>
-                      <tr>
-                        <td>Minerva Hooper</td>
-                        <td>Curaçao</td>
-                        <td>Sinaai-Waas</td>
-                        <td className="text-center">$23,789</td>
-                      </tr>
-                      <tr>
-                        <td>Sage Rodriguez</td>
-                        <td>Netherlands</td>
-                        <td>Baileux</td>
-                        <td className="text-center">$56,142</td>
-                      </tr>
-                      <tr>
-                        <td>Philip Chaney</td>
-                        <td>Korea, South</td>
-                        <td>Overland Park</td>
-                        <td className="text-center">$38,735</td>
-                      </tr>
-                      <tr>
-                        <td>Doris Greene</td>
-                        <td>Malawi</td>
-                        <td>Feldkirchen in Kärnten</td>
-                        <td className="text-center">$63,542</td>
-                      </tr>
-                      <tr>
-                        <td>Mason Porter</td>
-                        <td>Chile</td>
-                        <td>Gloucester</td>
-                        <td className="text-center">$78,615</td>
-                      </tr>
-                      <tr>
-                        <td>Jon Porter</td>
-                        <td>Portugal</td>
-                        <td>Gloucester</td>
-                        <td className="text-center">$98,615</td>
-                      </tr>
+                    {this.state.orders.length ? this.state.orders.map(order =>
+                            <tr>
+                                <td>{order.orderId}</td>
+                                <td>{order.fName}</td>
+                                <td>{order.cardType}</td>
+                                <td>{order.purchaseDate}</td>
+                                <td className="text-center">{order.total}</td>
+                            </tr>
+                    ):null}
                     </tbody>
                   </Table>
                 </CardBody>
@@ -168,4 +154,4 @@ class Tables extends React.Component {
   }
 }
 
-export default Tables;
+export default OrderList;
