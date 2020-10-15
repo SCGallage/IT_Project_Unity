@@ -23,95 +23,34 @@ import Rtl from "views/Rtl.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
-
-import AddAmbulanceDetails from "./components/Ambulance/AddAmbulanceDetails";
-import EmergencyPro from "./components/Ambulance/EmergencyPro";
-import ViewAmbulanceDetails from "./components/Ambulance/ViewAmbulanceDetails";
-import ViewAmbulanceTimeSlot from "./components/Ambulance/AddAmbulanceTimeSlot";
-import EditAmbulanceTimeSlot from "./components/Ambulance/EditAmbulanceTimeSlot";
-import AddAmbulanceTimeSlot from "./components/Ambulance/AddAmbulanceTimeSlot";
-
-var routes = [
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
-    icon: "tim-icons icon-chart-pie-36",
-    component: Dashboard,
-    layout: "/admin"
-  },
-
-    //Emergency properties
-  {
-    path: "/emergency-pro",
-    name: "Emergency",
-    rtlName: "الرموز",
-    icon: "tim-icons icon-atom",
-    component: EmergencyPro,
-    layout: "/admin"
-  },
-
-  {
-    path: "/view-ambulance-details",
-    rtlName: "الرموز",
-    component: ViewAmbulanceDetails,
-    layout: "/admin"
-  },
-
-  {
-    path: "/add-ambulance-details",
-    rtlName: "الرموز",
-    component: AddAmbulanceDetails,
-    layout: "/admin"
-  },
-
-  {
-    path: "/view-ambulance-timeslots",
-    rtlName: "الرموز",
-    component: ViewAmbulanceTimeSlot,
-    layout: "/admin"
-
 import ItemType from "./views/ItemType";
 import Item from "./views/Item";
 import AddItem from "./views/AddItem";
 import ItemDetails from "./views/ItemDetails";
+import CheckOut from "./views/CheckOut";
+import OrderList from "./views/OrderList";
 
 var routes = [
   {
     path: "/inventory",
-    name: "Item Details",
+    name: "Inventory",
     rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
+    icon: "tim-icons icon-app",
     component: ItemDetails,
     layout: "/nurse",
-    invisible: true,
     exact : true
-
-  },
-
-  {
-
-    path: "/edit-ambulance-timeslot",
-    rtlName: "الرموز",
-    component: EditAmbulanceTimeSlot,
-    layout: "/admin"
   },
   {
-    path: "/add-ambulance-timeslot",
-    rtlName: "الرموز",
-    component: AddAmbulanceTimeSlot,
-    layout: "/admin"
-
     path: "/inventory/addItem",
     name: "Add Item",
     rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
+    icon: "tim-icons icon-notes",
     component: AddItem,
     layout: "/nurse"
   },
   {
     path: "/inventory/:id",
-    name: "Item",
+    name: "Item Details",
     rtlName: "ار تي ال",
     icon: "tim-icons icon-world",
     component: Item,
@@ -126,8 +65,40 @@ var routes = [
     component: ItemType,
     layout: "/nurse",
     invisible: true
-
+  },
+  {
+    path: "/inventory/items/:type",
+    name: "Add Patient",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-single-02",
+    component: ItemType,
+    layout: "/nurse",
+  },
+  {
+    path: "/inventory/items/:type",
+    name: "Patient Details",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-sound-wave",
+    component: ItemType,
+    layout: "/nurse"
+  },
+  {
+    path: "/checkout",
+    name: "Check Out",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-sound-wave",
+    component: CheckOut,
+    layout: "/nurse",
+    invisible: true
+  },
+  {
+    path: "/orders",
+    name: "Order List",
+    rtlName: "ار تي ال",
+    icon: "tim-icons icon-sound-wave",
+    component: OrderList,
+    layout: "/nurse",
+    invisible: true
   }
-
 ];
 export default routes;
