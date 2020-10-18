@@ -1,4 +1,4 @@
-import {ADD_CART, RMV_CART} from "./cartTypes";
+import {ADD_CART, RMV_CART, RST_CART} from "./cartTypes";
 
 
 export const addCart = (itemId,name,quantity,price) => {
@@ -21,6 +21,12 @@ export const rmvCart = (itemId, price, quantity) => {
             quantity: quantity,
             price: price
         }
+    }
+}
+
+export const rstCart = () => {
+    return {
+        type: RST_CART
     }
 }
 

@@ -1,4 +1,4 @@
-import {ADD_CART, RMV_CART} from "./cartTypes";
+import {ADD_CART, RMV_CART, RST_CART} from "./cartTypes";
 import {persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -28,6 +28,10 @@ const cartReducer = (state = initialState, action) => {
                 return item.itemId !== action.payload.itemId;
             }),
             total: state.total - (action.payload.price*action.payload.quantity)
+        }
+        case RST_CART: return {
+            shoppingCart: [],
+            total: 0
         }
         default: return state
     }

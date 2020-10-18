@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -77,8 +78,12 @@ public class InventoryController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/inventoryItems/{id}")
-    public void deleteInventoryItem(@PathVariable String id){
-        inventoryService.deleteInventoryItem(id);
+    public Map<String, Boolean> deleteInventoryItem(@PathVariable String id){
+        //inventoryService.deleteInventoryItem(id);
+        Map<String, Boolean> valid = new HashMap<>();
+        valid.put("valid",inventoryService.deleteInventoryItem(id));
+
+        return valid;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/inventoryItems/checkout/update", consumes = "application/json")

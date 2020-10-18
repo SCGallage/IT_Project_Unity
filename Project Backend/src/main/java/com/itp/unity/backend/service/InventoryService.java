@@ -1,9 +1,6 @@
 package com.itp.unity.backend.service;
 
-import com.itp.unity.backend.model.InventoryItem;
-import com.itp.unity.backend.model.ItemIdOnly;
-import com.itp.unity.backend.model.OrderItem;
-import com.itp.unity.backend.model.OrderItemWrapper;
+import com.itp.unity.backend.model.*;
 import com.itp.unity.backend.repository.InventoryRepository;
 import com.itp.unity.backend.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,7 @@ public class InventoryService {
     public List<InventoryItem> getAllInventoryItems(){
         List<InventoryItem> inventoryItems = new ArrayList<>();
         inventoryRepository.findAll().forEach(inventoryItems::add);
+        inventoryItems.sort(new InventorySorter());
         return inventoryItems;
     }
 
@@ -46,8 +44,9 @@ public class InventoryService {
             return false;
     }
 
-    public void deleteInventoryItem(String itemID) {
+    public boolean deleteInventoryItem(String itemID) {
         inventoryRepository.deleteById(itemID);
+        return inventoryRepository.existsById(itemID);
     }
 
     public List<InventoryItem> findByItemType(String itemType){
@@ -65,7 +64,9 @@ public class InventoryService {
             Date date1 = new Date();
             long difference = date.getTime() - date1.getTime();
             long diffenceMonths = difference / (1000*60*60*24);
-            if(diffenceMonths <= 30){
+            System.out.println("Item ID Months:"+inventoryItem.getItemID());
+            System.out.println("Difference Months:"+diffenceMonths);
+            if(diffenceMonths <= 30 && diffenceMonths >= 0){
                 inventoryItems.add(inventoryItem);
             }
         });

@@ -150,7 +150,7 @@ function AddItem({match}) {
         <>
             <div className="content">
                 <Row>
-                    <Col md="10">
+                    <Col sm="12" md={{ size: 10, offset: 1 }}>
                         <h1>Add New Item Details</h1>
                         <Card>
                             <CardBody>

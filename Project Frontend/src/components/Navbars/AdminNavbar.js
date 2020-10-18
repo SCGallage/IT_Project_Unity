@@ -47,8 +47,9 @@ import {
 } from "reactstrap";
 import Footer from "../Footer/Footer";
 import Table from "reactstrap/es/Table";
-import {rmvCart} from "../../Redux/cartAction";
+import {rmvCart, rstCart} from "../../Redux/cartAction";
 import NotificationAlert from "react-notification-alert";
+import {Link} from "react-router-dom";
 
 var options = {};
 options = {
@@ -230,7 +231,7 @@ class AdminNavbar extends React.Component {
             </button>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <Nav className="ml-auto" navbar>
-                {this.props.location.pathname.indexOf("inventory") === -1 ? null : (
+                {this.props.location.pathname.indexOf("orders") === -1 ? null : (
                 <InputGroup className="search-bar">
                   <Form inline>
                   <FormGroup className="no-border">
@@ -263,7 +264,7 @@ class AdminNavbar extends React.Component {
                               <div key={p.itemID}>
                                 <NavLink tag="li" >
                                   <DropdownItem className="nav-item" href={this.CreateURL(p.itemID)}>
-                                    {p.displayName} is running out!
+                                    {p.displayName} is running out! Click to Visit the Item
                                   </DropdownItem>
                                 </NavLink>
                               </div>):"No posts to show"
@@ -393,8 +394,8 @@ class AdminNavbar extends React.Component {
                     <DropdownItem className="nav-item">
                       <Table>
                       <tr>
-                        <td><Button>Reset Cart</Button></td>
-                        <td><Button><a href="http://localhost:3000/nurse/checkout">Check Out</a></Button></td>
+                        <td><Button onClick={this.props.rstCart}>Reset Cart</Button></td>
+                        <td><Link to="/nurse/checkout"><Button>Check Out</Button></Link></td>
                       </tr>
                       </Table>
                     </DropdownItem>
@@ -469,6 +470,7 @@ const mapDispatchToProps = dispatch => {
 
   return {
     rmvCart: (itemId, price, quantity) => dispatch(rmvCart(itemId, price, quantity)),
+    rstCart: () => dispatch(rstCart())
   }
 
 }

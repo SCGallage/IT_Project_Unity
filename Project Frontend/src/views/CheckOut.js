@@ -66,13 +66,13 @@ function CheckOut(props) {
 
     fName: Yup.string().required('First Name Required!'),
     lName: Yup.string().required('Last Name Required!'),
-    streetNo: Yup.number().integer('Not Integer').min(0,'Cannot Be Negative'),
-    street: Yup.string().required('Last Name Required!'),
-    city: Yup.string().required('Last Name Required!'),
+    streetNo: Yup.number().integer('Not Integer').min(1,'Cannot Be Negative'),
+    street: Yup.string().required('Street Required!'),
+    city: Yup.string().required('City Required!'),
     cardType: Yup.string().required('Last Name Required!'),
-    cardNo: Yup.string().required('Item Type Required!'),
-    cvv: Yup.number().integer('Not Integer').min(0,'Cannot Be Negative'),
-    phoneNo: Yup.number().integer('Not Integer').min(0,'Cannot Be Negative')
+    cardNo: Yup.number().required('Item Type Required!'),
+    cvv: Yup.number().moreThan(100,'Minimum is 100!').positive('Enter Positive Value!').integer('Enter an Integer Number!'),
+    phoneNo: Yup.number().integer('Not Integer').min(1,'Cannot Be Negative')
 
   })
 

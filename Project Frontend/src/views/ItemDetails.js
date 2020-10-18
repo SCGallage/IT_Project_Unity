@@ -31,20 +31,23 @@ import {addCart} from "../Redux/cartAction";
 import {connect} from "react-redux"
 import EasyTimer from "easytimer";
 
-
+let dId = '';
 var options = {};
 
 function ItemDetails(props) {
 
     const [visible, setVisible] = useState(false);
     const [msg, setMsg] = useState(false);
+    const [msg1, setMsg1] = useState(false);
+    const onmiss = () => setMsg1(false);
+    const dsmissal = (e) => setMsg1(false);
     const onDmiss = () => setMsg(false);
     const dmissal = (e) => setMsg(false);
     const [qty,setQty] = useState(0);
     const [search,setSearch] = useState('');
     const onDismiss = () => setVisible(false);
     const dismissal = (e) => setVisible(false);
-    const [modal,setModal] = useState(false)
+    const [modal,setModal] = useState(false);
 
 
     function toggleModalSearch() {
@@ -57,24 +60,51 @@ function ItemDetails(props) {
 
     }
 
-    function checkCartEntry(itemId,displayName,price,qty) {
-        console.log('quantity',qty)
+    function setDelItem(itemID){
+        dId = itemID;
+        setmodalDemo(true);
+        console.log('Delete Item ID Let',dId)
+    }
+
+    function deleteItem(){
+        axios.delete(`http://localhost:8080/inventoryItems/${dId}`)
+            .then(res => {
+                console.log('Deleted',res.data.valid)
+                if (res.data.valid === false) {
+                    console.log('Yeah Boi Org',dId)
+                    setmodalDemo(false)
+                    window.location.reload()
+                }
+                    //filteredItems = posts.splice(filteredItems.findIndex(x => x.itemID === dId),1)
+                    //console.log('Filter Delete',filteredItems)
+            });
+        console.log('Yeah Boi',dId)
+    }
+
+    function checkCartEntry(itemId,displayName,price,qty,inventory) {
+
         const available = props.shoppingCart.filter(function (item) {
             console.log(item.itemId)
             return item.itemId === itemId;
         })
-        if (available.length === 0) {
+        if (available.length === 0 && qty !== '' && qty <= inventory) {
             props.addCart(itemId, displayName, qty, price)
             setMsg(true);
             let timer = new EasyTimer();
             timer.start({countdown: true, startValues: {seconds: 3}});
             timer.addEventListener('targetAchieved', dmissal);
         }
-        else {
+        else if(qty !== '' && qty <= inventory) {
             setVisible(true);
             let timer = new EasyTimer();
             timer.start({countdown: true, startValues: {seconds: 3}});
             timer.addEventListener('targetAchieved', dismissal);
+        }
+        else {
+            setMsg1(true);
+            let timer = new EasyTimer();
+            timer.start({countdown: true, startValues: {seconds: 3}});
+            timer.addEventListener('targetAchieved', dsmissal);
         }
     }
 
@@ -126,8 +156,11 @@ function ItemDetails(props) {
                 <Alert color="danger" isOpen={visible} toggle={onDismiss}>
                     This item is already added to the cart!
                 </Alert>
-                <Alert color="info" isOpen={msg} toggle={onDmiss}>
+                <Alert color="success" isOpen={msg} toggle={onDmiss}>
                     Item was added to the cart!
+                </Alert>
+                <Alert color="info" isOpen={msg1} toggle={onmiss}>
+                    Check the quantity you added!
                 </Alert>
                 <h1>Inventory Items</h1>
                 <h3>Search <Button className="btn-round btn-icon" color="primary" onClick={() => toggleModalSearch()}>
@@ -178,9 +211,9 @@ function ItemDetails(props) {
                                                 </div>
                                             </CardBody>
                                             <CardFooter>
-                                                <Input type="number" min="1" id={obj.itemID} max={obj.noOfItems}/>
+                                                <Input type="number" min="1" id={obj.itemID} max={obj.noOfItems} required/>
                                                 <div className="button-container">
-                                                    <Button color="info" className="btn-icon btn-round" onClick={() => checkCartEntry(obj.itemID,obj.displayName,obj.price,document.getElementById(obj.itemID).value)}>
+                                                    <Button color="info" className="btn-icon btn-round" onClick={() => checkCartEntry(obj.itemID,obj.displayName,obj.price,document.getElementById(obj.itemID).value,obj.noOfItems)} >
                                                         <i className="tim-icons icon-cart"/>
                                                     </Button>
                                                     <Link to={`/nurse/inventory/${obj.itemID}`}>
@@ -189,51 +222,43 @@ function ItemDetails(props) {
                                                     </Button>
                                                     </Link>
                                                     <Button className="btn-icon btn-round" color="facebook"
-                                                            onClick={() => setmodalDemo(true)}>
+                                                            onClick={() => setDelItem(obj.itemID)}>
                                                         <i className="tim-icons icon-simple-remove"/>
                                                     </Button>
                                                 </div>
                                             </CardFooter>
-                                            <Modal isOpen={modalDemo}>
-                                                <div className="modal-header">
-                                                    <h5 className="modal-title" id="exampleModalLabel">
-                                                        Delete Item From Inventory
-                                                    </h5>
-                                                    <button
-                                                        type="button"
-                                                        className="close"
-                                                        data-dismiss="modal"
-                                                        aria-hidden="true"
-                                                        onClick={() => setmodalDemo(false)}
-                                                    >
-                                                        <i className="tim-icons icon-simple-remove"/>
-                                                    </button>
-                                                </div>
-                                                <ModalBody>
-                                                    <p>Confirm that you want to delete this item. Changes cannot be reverted!</p>
-                                                </ModalBody>
-                                                <ModalFooter>
-                                                    <Button color="secondary" onClick={() => setmodalDemo(false)}>
-                                                        Close
-                                                    </Button>
-                                                    <Button color="primary"
-                                                            onClick={() => {
-                                                                axios.delete(`http://localhost:8080/inventoryItems/${obj.itemID}`)
-                                                                .then(res => {
-                                                                    setmodalDemo(false)
-                                                                    history.push({
-                                                                        pathname: '/nurse/inventory'
-                                                                    })
-                                                                });
-                                                            }}>
-                                                        Delete
-                                                    </Button>
-                                                </ModalFooter>
-                                            </Modal>
                                         </Card>
                                     </Col>
                             ):null
                     }
+                        <Modal isOpen={modalDemo}>
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">
+                                    Delete Item From Inventory
+                                </h5>
+                                <button
+                                    type="button"
+                                    className="close"
+                                    data-dismiss="modal"
+                                    aria-hidden="true"
+                                    onClick={() => setmodalDemo(false)}
+                                >
+                                    <i className="tim-icons icon-simple-remove"/>
+                                </button>
+                            </div>
+                            <ModalBody>
+                                <p>Confirm that you want to delete this item. Changes cannot be reverted!</p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="secondary" onClick={() => setmodalDemo(false)}>
+                                    Close
+                                </Button>
+                                <Button color="primary"
+                                        onClick={() => deleteItem()} >
+                                    Delete
+                                </Button>
+                            </ModalFooter>
+                        </Modal>
                 </Row>
             </div>
         </>
