@@ -85,6 +85,7 @@ class Admin extends React.Component {
             path={prop.layout + prop.path}
             component={prop.component}
             key={key}
+            exact
           />
         );
       } else {
@@ -117,7 +118,7 @@ class Admin extends React.Component {
             bgColor={this.state.backgroundColor}
             logo={{
               outterLink: "https://www.creative-tim.com/",
-              text: "Creative Tim",
+              text: "Unity Health",
               imgSrc: logo
             }}
             toggleSidebar={this.toggleSidebar}

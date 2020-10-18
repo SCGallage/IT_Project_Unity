@@ -40,14 +40,14 @@ function ItemType({match}) {
                 <Nav className="justify-content-center">
                     <NavItem>
                         <div color="info">
-                            <NavLink className="h4"><Link to="/admin/deleteItem/items/Tablet">Tablet</Link></NavLink>
+                            <NavLink className="h4"><Link to="/nurse/inventory/items/Tablet">Medicine</Link></NavLink>
                         </div>
                     </NavItem>
                     <NavItem>
-                        <NavLink className="h4"><Link to="/admin/deleteItem/items/Equipment">Equipment</Link></NavLink>
+                        <NavLink className="h4"><Link to="/nurse/inventory/items/Equipment">Medical Equipment</Link></NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink className="h4"><Link to="/admin/deleteItem/items/Other">Other</Link></NavLink>
+                        <NavLink className="h4"><Link to="/nurse/inventory/items/Other">Other</Link></NavLink>
                     </NavItem>
                 </Nav>
                 <Row>
@@ -83,8 +83,8 @@ function ItemType({match}) {
                                         </CardBody>
                                         <CardFooter>
                                             <div className="button-container">
-                                                <Button color="info" className="btn-round">ADD TO CART</Button>
-                                                <Link to={`/admin/deleteItem/${obj.itemID}`}>
+                                                <Button color="info" className="btn-round"><i className="tim-icons icon-cart"/></Button>
+                                                <Link to={`/nurse/inventory/${obj.itemID}`}>
                                                     <Button className="btn-icon btn-round" color="twitter">
                                                         <i className="tim-icons icon-single-copy-04"/>
                                                     </Button>

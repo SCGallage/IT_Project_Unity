@@ -36,6 +36,7 @@ public class InventoryItem {
     @Column(name = "description")
     private String description;
 
+
     public InventoryItem() {
     }
 
