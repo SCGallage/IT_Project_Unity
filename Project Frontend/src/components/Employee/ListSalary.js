@@ -1,17 +1,77 @@
 import React, { Component } from 'react'
+import SalaryService from "../Services/SalaryService";
+import {Breadcrumb, BreadcrumbItem, Button, Card, CardBody, CardText, Col, Label} from "reactstrap";
 import EmployeeService from "../Services/EmployeeService";
-import {Breadcrumb, BreadcrumbItem, Card, CardBody, CardText, Col, Label} from "reactstrap";
+import html2canvas from 'html2canvas';
+import { jsPDF } from "jspdf";
 
 export class ListSalary extends Component {
 
     constructor(props) {
         super(props)
 
+        this.state = {
+            salary : []
+        }
+
+    }
+
+    generatePDF = () => {
+        var doc = new jsPDF('p', 'pt');
+
+        doc.text(20, 20, 'This is the first title.')
+
+        doc.setFont('helvetica')
+        doc.text(20, 60, 'This is the second title.')
+
+        doc.setFont('helvetica')
+        doc.text(20, 100, 'This is the thrid title.')
+
+
+        doc.save('demo.pdf')
+    }
+
+    generatePDFNEW = () => {
+        //document.getElementById('card-body').find('th:last-child, td:last-child').remove()
+        const doc = new jsPDF("landscape", "mm", "a4")
+
+        doc.autoTable({ html: '#card-body2' })
+        //autoTable(doc, { html: '#mytable' })
+        doc.save('salary_list.pdf')
+
     }
 
 
+    // generatePDFNEW = () => {
+    //     const input = document.getElementById('card-body');
+    //
+    //     html2canvas(input)
+    //         .then((canvas) => {
+    //             const imgData = canvas.toDataURL('image/png');
+    //             const pdf = new jsPDF();
+    //             pdf.addImage(imgData, 'JPEG', 0, 0);
+    //             pdf.save("download.pdf");
+    //         });
+    //     ;
+    //
+    // }
+
+    componentDidMount(){
+        SalaryService.getAllSalary().then((res) => {
+            this.setState({ salary : res.data})
+        })
+    }
+
+    deleteSalary(sid){
+        SalaryService.deleteSalary(sid).then( res => {
+            this.setState({salary: this.state.salary.filter(salary => salary.sid !== sid)});
+            console.log("delete salarry"+sid)
+        });
+    }
+
     render() {
         return (
+
             <div className="content">
                 <Breadcrumb>
                     <BreadcrumbItem><a href="/admin/dashboard#">Dashboard</a></BreadcrumbItem>
@@ -19,10 +79,10 @@ export class ListSalary extends Component {
                 </Breadcrumb>
                 <div>
                     <br></br>
+
                     <div className = "card col-md-15 offset-md-0">
                         <br/>
                         <h3 className = "text-center">Salary List</h3>
-
                         <Col md="20">
                             <Card className="card-user">
                                 <CardBody>
@@ -38,7 +98,7 @@ export class ListSalary extends Component {
 
 
 
-                                    <div className = "card-body">
+                                    <div id = "card-body">
 
                                         <table className = "table table-striped table-bordered ">
                                             <thead>
@@ -48,14 +108,66 @@ export class ListSalary extends Component {
                                                 <th> Year </th>
                                                 <th> Month </th>
                                                 <th> Work Days </th>
+                                                <th> Total Salary </th>
                                                 <th> Actions </th>
                                             </tr>
                                             </thead>
 
+                                            <tbody>
+                                            {
+                                                this.state.salary.map(
+                                                    salarys =>
+                                                        <tr key = {salarys.sid}>
+                                                            <td> {salarys.sid} </td>
+                                                            <td> {salarys.employee_id } </td>
+                                                            <td> {salarys.year } </td>
+                                                            <td> {salarys.month } </td>
+                                                            <td> {salarys.work_days } </td>
+                                                            <td> {salarys.salary} </td>
+                                                            <td><button className = "btn btn-info btn-simple"> Update</button>
+
+                                                                <button style={{marginLeft: "10px"}} onClick={ () => { if (window.confirm('Are you sure you wish to delete this item?')) this.deleteSalary(salarys.sid) }} className="btn btn-danger btn-simple">Delete </button>
+                                                                <button style={{marginLeft: "10px"}} className="btn btn-info btn-simple">View </button>
+
+                                                            </td>
+                                                        </tr>
+                                                )
+                                            }
+                                            </tbody>
+
                                         </table>
 
+                                    </div>
 
+                                    <div>
 
+                                        <table id = "card-body2" className = "table table-striped table-bordered print-table ">
+                                            <thead>
+                                            <tr>
+                                                <th> Employee ID </th>
+                                                <th> Year </th>
+                                                <th> Month </th>
+                                                <th> Work Days </th>
+                                                <th> Monthly Salary </th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            {
+                                                this.state.salary.map(
+                                                    salarys =>
+                                                        <tr key = {salarys.sid}>
+                                                            <td> {salarys.employee_id } </td>
+                                                            <td> {salarys.year } </td>
+                                                            <td> {salarys.month } </td>
+                                                            <td> {salarys.work_days } </td>
+                                                            <td> {salarys.salary} </td>
+                                                        </tr>
+                                                )
+                                            }
+                                            </tbody>
+
+                                        </table>
 
                                     </div>
 

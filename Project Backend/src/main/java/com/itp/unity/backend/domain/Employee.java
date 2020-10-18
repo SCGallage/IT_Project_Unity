@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 import javax.validation.constraints.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "employees")
 @SequenceGenerator(name="seq_emp_id", initialValue=2500, allocationSize=5000)

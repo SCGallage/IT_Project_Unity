@@ -321,13 +321,14 @@ export class UpdateEmployee extends Component {
                                                 <FormGroup check inline className="form-check-radio">
 
                                                     <label className="form-check-label">
-                                                        <Input type="radio" name="exampleRadios1" id="exampleRadios11"
+                                                        <Input type="radio" name="gender" id="exampleRadios11"
                                                                value={this.state.gender} onChange={this.changeGenderHandler}
+                                                               defaultChecked
                                                                />Male
                                                         <span className="form-check-sign"></span>
                                                     </label>
                                                     <label className="form-check-label">
-                                                        <Input type="radio" name="exampleRadios1" id="exampleRadios12"
+                                                        <Input type="radio" name="gender" id="exampleRadios12"
                                                                value={this.state.gender} onChange={this.changeGenderHandler}/>
                                                         Female
                                                         <span className="form-check-sign"></span>

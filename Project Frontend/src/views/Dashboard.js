@@ -219,14 +219,14 @@ class Dashboard extends React.Component {
                     <div className="block block-two" />
                     <div className="block block-three" />
                     <div className="block block-four" />
-                    <a href="/admin/expense">
+                    <a href="/admin/reports">
 
                       <img
                           alt="..."
                           className="avatar"
                           src={require("assets/img/expenses.jpg")}
                       />
-                      <h5 className="title">Expenditure</h5>
+                      <h5 className="title">Reports</h5>
                     </a>
                   </div>
 

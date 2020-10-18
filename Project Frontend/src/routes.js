@@ -32,6 +32,7 @@ import SearchEmployeeName from "./components/Employee/SearchEmployeeName";
 import SearchEmployeeDesignation from "./components/Employee/SearchEmployeeDesignation";
 import AddSalary from "./components/Employee/AddSalary";
 import ListSalary from "./components/Employee/ListSalary";
+import Reports from "./components/Employee/Reports";
 
 var routes = [
   {
@@ -105,6 +106,13 @@ var routes = [
     component: ListSalary,
     layout: "/admin"
   },
+
+  {
+    path: "/reports",
+    rtlName: "ار تي ال",
+    component: Reports,
+    layout: "/admin"
+  }
 
 
 ];

@@ -1,7 +1,6 @@
 package com.itp.unity.backend.controller;
 
 import com.itp.unity.backend.domain.Employee;
-import com.itp.unity.backend.model.EmployeeModel;
 import com.itp.unity.backend.model.ResponseModel;
 import com.itp.unity.backend.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +99,72 @@ public class EmployeeController {
         }
 
     }
+    
+    @GetMapping("/employees/salary/{id}")
+	public @ResponseBody ResponseEntity<?> getEmployeeSalaryById(@PathVariable Long id) {
 
+		try {
+			if (employeeService.getEmployeeById(id) != null) {
+				return new ResponseEntity<>(employeeService.getEmployeeSalaryById(id), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+			}
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+    
+    @GetMapping("/employees/appointfee/{id}")
+   	public @ResponseBody ResponseEntity<?> getEmployeeAppointFeeById(@PathVariable Long id) {
+
+   		try {
+   			if (employeeService.getEmployeeById(id) != null) {
+   				return new ResponseEntity<>(employeeService.getEmployeeAppointmentById(id), HttpStatus.OK);
+   			} else {
+   				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+   			}
+
+   		} catch (Exception e) {
+   			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+
+   	}
+
+    @GetMapping("/employees/name/{id}")
+   	public @ResponseBody ResponseEntity<?> getEmployeeNameById(@PathVariable Long id) {
+
+   		try {
+   			if (employeeService.getEmployeeById(id) != null) {
+   				return new ResponseEntity<>(employeeService.getEmployeeNameById(id), HttpStatus.OK);
+   			} else {
+   				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+   			}
+
+   		} catch (Exception e) {
+   			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+
+   	}
+    
+    @GetMapping("/employees/docname/{id}")
+   	public @ResponseBody ResponseEntity<?> getEmployeeDocNameById(@PathVariable Long id) {
+
+   		try {
+   			if (employeeService.getEmployeeById(id) != null) {
+   				return new ResponseEntity<>(employeeService.getEmployeeDocNameById(id), HttpStatus.OK);
+   			} else {
+   				return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+   			}
+
+   		} catch (Exception e) {
+   			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+
+   	}
+  
+    
     @GetMapping("/employees/name")
     public  @ResponseBody ResponseEntity<?> findByFirstname(@RequestParam(required = false) String firstname) {
         try {

@@ -34,6 +34,51 @@ public class EmployeeServiceImpl implements EmployeeService {
             return null;
         }
     }
+    
+	public int getEmployeeSalaryById(Long id) {
+		Employee employee = new Employee();
+		int bsal;
+		try {
+			bsal = employeeRepository.findById(id).get().getBsalary();
+			return bsal;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public int getEmployeeAppointmentById(Long id) {
+		Employee employee = new Employee();
+		int appfee;
+		try {
+			appfee = employeeRepository.findById(id).get().getAppointfee();
+			return appfee;
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public String getEmployeeDocNameById(Long id){
+		Employee employee = new Employee();
+		String name = null;
+		try {
+			if(employeeRepository.findById(id).get().getDesignation().equalsIgnoreCase("Doctor"))
+			name = employeeRepository.findById(id).get().getFirstname() + " " +employeeRepository.findById(id).get().getLastname();
+			return name;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public String getEmployeeNameById(Long id){
+		Employee employee = new Employee();
+		String name;
+		try {
+			name = employeeRepository.findById(id).get().getFirstname() + " " +employeeRepository.findById(id).get().getLastname();
+			return name;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
     public boolean addEmployee(Employee employeeModel) {
         Employee employee = new Employee();

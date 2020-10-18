@@ -407,15 +407,13 @@ class Employee extends React.Component {
                                                 <FormGroup check inline className="form-check-radio">
 
                                                     <label className="form-check-label">
-                                                        <Input type="radio" name="gender" id="exampleRadios11"
-                                                            // value={this.state.gender} onChange={this.changeGenderHandler}
-                                                            // defaultChecked/>Male
-                                                               value="Male" onChange={this.changeGenderHandler}/>Male
+                                                        <Input type="radio" name="gender" id="exampleRadios18"
+                                                        value="Male" onChange={this.changeGenderHandler}/>Male
 
                                                         <span className="form-check-sign"></span>
                                                     </label>
                                                     <label className="form-check-label">
-                                                        <Input type="radio" name="gender" id="exampleRadios12"
+                                                        <Input type="radio" name="gender" id="exampleRadios17"
                                                                value="Female" onChange={this.changeGenderHandler}/>
                                                         Female
                                                         <span className="form-check-sign"></span>
