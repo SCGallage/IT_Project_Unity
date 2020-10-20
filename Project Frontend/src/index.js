@@ -20,7 +20,7 @@ import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
-import AdminLayout from "layouts/Admin/Admin.js";
+import AdminLayout from "layouts/Admin/Ambulance_.js";
 import RTLLayout from "layouts/RTL/RTL.js";
 import NurseLayout from "layouts/Admin/Nurse"
 

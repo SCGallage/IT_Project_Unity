@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 // reactstrap components
 import {
@@ -29,14 +29,47 @@ import {
     Form,
     Input,
     Row,
-    Col
+    Col, Breadcrumb, BreadcrumbItem
 } from "reactstrap";
+import axios from "axios";
+import {withRouter} from "react-router-dom";
 
-class EditAmbulanceDetails extends React.Component {
-    render() {
+function EditAmbulanceDetails(props) {
+    const[stateAmb,  setstateAmb] = useState({})
+    useEffect(() => {
+        let id =props.match.params.id;
+        getAmbById(id);
+    }, [props.match.params.id]);
+
+    const getAmbById = id =>{
+        axios
+            .get('http://localhost:8080/api/ambulance/${id}')
+            .then(d => {
+                let amb = d.data;
+                setstateAmb({
+                    regno:amb.regno,
+                    insuranceno:amb.insuranceno,
+                    email:amb.email,
+                    phone:amb.phone,
+                    fname:amb.fname,
+                    lname:amb.lname,
+                    address:amb.address,
+                    ciyt:amb.ciyt,
+                    country:amb.country,
+                    postalCode:amb.postalCode,
+                    vdetails:amb.vdetails
+                });
+            })
+            .catch(err => alert(err));
+    };
         return (
             <>
                 <div className="content">
+                    <Breadcrumb tag="nav" listTag="div">
+                        <BreadcrumbItem tag="a" href="/dashboard">Dashboard</BreadcrumbItem>
+                        <BreadcrumbItem tag="a" href="/emergency-pro">Emergency</BreadcrumbItem>
+                        <BreadcrumbItem active tag="/view-ambulance-details">Edit</BreadcrumbItem>
+                    </Breadcrumb>
                     <Row>
                         <Col md="8">
                             <Card>
@@ -44,7 +77,9 @@ class EditAmbulanceDetails extends React.Component {
                                     <h4 className="title text-center">Edit Ambulance Details</h4>
                                 </CardHeader>
                                 <CardBody>
-                                    <Form>
+                                    <Form onSubmit={e => {
+                                        e.preventDefault();
+                                    }}>
                                         <Row>
                                             <Col className="pr-md-1" md="6">
                                                 <FormGroup>
@@ -53,6 +88,11 @@ class EditAmbulanceDetails extends React.Component {
                                                         placeholder="Wp12345"
                                                         type="text"
                                                         required
+                                                        value={stateAmb.regno}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({regno: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -63,6 +103,11 @@ class EditAmbulanceDetails extends React.Component {
                                                         placeholder="xxxxxxxxxx"
                                                         type="text"
                                                         required
+                                                        value={stateAmb.insuranceno}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({insuranceno: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -75,7 +120,12 @@ class EditAmbulanceDetails extends React.Component {
                                                         placeholder="perera@email.com"
                                                         type="email"
                                                         required
-                                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"/>
+                                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                                        value={stateAmb.email}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({email: value})
+                                                        }}/>
                                                 </FormGroup>
                                             </Col>
                                             <Col className="pl-md-1" md="6">
@@ -86,6 +136,11 @@ class EditAmbulanceDetails extends React.Component {
                                                         type="tel"
                                                         required
                                                         pattern="+094-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{3}"
+                                                        value={stateAmb.phone}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({phone: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -98,6 +153,11 @@ class EditAmbulanceDetails extends React.Component {
                                                         placeholder="Perera"
                                                         type="text"
                                                         required
+                                                        value={stateAmb.fname}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({fname: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -108,6 +168,11 @@ class EditAmbulanceDetails extends React.Component {
                                                         placeholder="Thilakaratna"
                                                         type="text"
                                                         required
+                                                        value={stateAmb.lname}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({lname: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -120,6 +185,11 @@ class EditAmbulanceDetails extends React.Component {
                                                         placeholder="lake road, Matara"
                                                         type="textarea"
                                                         required
+                                                        value={stateAmb.address}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({address: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -132,6 +202,11 @@ class EditAmbulanceDetails extends React.Component {
                                                         placeholder="Matara"
                                                         type="text"
                                                         required
+                                                        value={stateAmb.city}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({city: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -143,6 +218,11 @@ class EditAmbulanceDetails extends React.Component {
                                                         placeholder="Country"
                                                         type="text"
                                                         required
+                                                        value={stateAmb.country}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({country: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -151,8 +231,15 @@ class EditAmbulanceDetails extends React.Component {
                                                     <label>Postal Code</label>
                                                     <Input
                                                         placeholder="ZIP Code"
-                                                        type="number" />
-                                                    required
+                                                        type="number"
+                                                        required
+                                                        value={stateAmb.postalCode}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({postalCode: value})
+                                                        }}
+                                                    />
+
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -166,6 +253,11 @@ class EditAmbulanceDetails extends React.Component {
                                                         rows="4"
                                                         type="textarea"
                                                         required
+                                                        value={stateAmb.vdetails}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateAmb({vdetails: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -224,7 +316,6 @@ class EditAmbulanceDetails extends React.Component {
                 </div>
             </>
         );
-    }
 }
 
-export default EditAmbulanceDetails;
+export default withRouter(EditAmbulanceDetails);

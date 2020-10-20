@@ -15,7 +15,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useState, useEffect} from "react";
+import {withRouter} from "react-router-dom";
+import axios from 'axios';
+import { useFormik } from "formik";
+import *as Yup from 'yup'
 
 // reactstrap components
 import {
@@ -32,8 +36,29 @@ import {
     Col, Label, CustomInput
 } from "reactstrap";
 
-class EditAmbulanceTimeSlot extends React.Component {
-    render() {
+function EditAmbulanceTimeSlot(props) {
+    const[stateTime,  setstateTime] = useState({})
+ useEffect(() => {
+     let id =props.match.params.id;
+     getTimeslotById(id);
+    }, [props.match.params.id]);
+
+ const getTimeslotById = id =>{
+     axios
+         .get('http://localhost:8080/api/ambulance-timeslot/${id}')
+         .then(t => {
+             let ambulanceTimeSlot = t.data;
+             setstateTime({
+                         state:ambulanceTimeSlot.state,
+                         time:ambulanceTimeSlot.time,
+                         email:ambulanceTimeSlot.email,
+                         ambulanceId:ambulanceTimeSlot.ambulanceId,
+                        driverId:ambulanceTimeSlot.driverId,
+                        nurseId:ambulanceTimeSlot.nurseId
+                    });
+        })
+         .catch(err => alert(err));
+ };
         return (
             <>
                 <div className="content">
@@ -44,7 +69,9 @@ class EditAmbulanceTimeSlot extends React.Component {
                                     <h4 className="title text-center">Edit Ambulance Time Slot</h4>
                                 </CardHeader>
                                 <CardBody>
-                                    <Form>
+                                    <Form onSubmit={e => {
+                                        e.preventDefault();
+                                    }}>
                                         <Col className="pr-md-1" md="6">
                                             <Row>
                                                 <FormGroup tag="fieldset">
@@ -52,7 +79,13 @@ class EditAmbulanceTimeSlot extends React.Component {
                                                     <Col>
                                                         <FormGroup check>
                                                             <Label check>
-                                                                <Input type="radio" color="danger" name="radio1" />{' '}
+                                                                <Input type="radio" color="danger" name="radio1"
+                                                                       value={stateTime.state}
+                                                                       onChange={e => {
+                                                                           let value = e.target.value;
+                                                                           setstateTime({state: value})
+                                                                       }}
+                                                                />{' '}
                                                                 Completed
                                                             </Label>
                                                         </FormGroup>
@@ -60,7 +93,13 @@ class EditAmbulanceTimeSlot extends React.Component {
                                                     <Col>
                                                         <FormGroup check>
                                                             <Label check>
-                                                                <Input type="radio" name="radio1" />{' '}
+                                                                <Input type="radio" name="radio1"
+                                                                       value={stateTime.state}
+                                                                       onChange={e => {
+                                                                           let value = e.target.value;
+                                                                           setstateTime({state: value})
+                                                                       }}
+                                                                />{' '}
                                                                 Incomplete
                                                             </Label>
                                                         </FormGroup>
@@ -75,6 +114,11 @@ class EditAmbulanceTimeSlot extends React.Component {
                                                     <Input
                                                         placeholder=""
                                                         type="time"
+                                                        value={stateTime.time}
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateTime({time: value})
+                                                        }}
                                                         required
                                                     />
                                                 </FormGroup>
@@ -86,7 +130,11 @@ class EditAmbulanceTimeSlot extends React.Component {
                                                         placeholder="+094761234432"
                                                         type="tel"
                                                         required
-                                                        pattern="+094-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{3}"
+                                                        pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateTime({phone: value})
+                                                        }}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -98,6 +146,10 @@ class EditAmbulanceTimeSlot extends React.Component {
                                                     <Input
                                                         placeholder=""
                                                         type="text"
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateTime({ambulanceId: value})
+                                                        }}
                                                         required
                                                     />
                                                 </FormGroup>
@@ -108,6 +160,10 @@ class EditAmbulanceTimeSlot extends React.Component {
                                                     <Input
                                                         placeholder=""
                                                         type="text"
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateTime({driverId: value})
+                                                        }}
                                                         required
                                                     />
                                                 </FormGroup>
@@ -120,6 +176,10 @@ class EditAmbulanceTimeSlot extends React.Component {
                                                     <Input
                                                         placeholder=""
                                                         type="text"
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateTime({nurseId: value})
+                                                        }}
                                                         required
                                                     />
                                                 </FormGroup>
@@ -132,6 +192,10 @@ class EditAmbulanceTimeSlot extends React.Component {
                                                     <Input
                                                         placeholder="Details regarding the time or ambulance or driver or nurse"
                                                         type="textarea"
+                                                        onChange={e => {
+                                                            let value = e.target.value;
+                                                            setstateTime({details: value})
+                                                        }}
                                                         required
                                                     />
                                                 </FormGroup>
@@ -153,7 +217,6 @@ class EditAmbulanceTimeSlot extends React.Component {
                 </div>
             </>
         );
-    }
 }
 
-export default EditAmbulanceTimeSlot;
+export default withRouter(EditAmbulanceTimeSlot);

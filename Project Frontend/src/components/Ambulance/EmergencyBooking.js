@@ -16,7 +16,8 @@
 
 */
 import React from "react";
-
+import { useFormik } from "formik";
+import *as Yup from 'yup'
 // reactstrap components
 import {
     Button,
@@ -34,9 +35,33 @@ import {
     CustomInput
 } from "reactstrap";
 
-class EmergencyBooking extends React.Component {
-
-    render() {
+const initialValues = {
+    fname: '',
+    lname: '',
+    phone: '',
+    email: '',
+    address: '',
+    pdetails: ''
+}
+const onSubmit = values =>{
+    console.log('Form data', values)
+}
+const validationSchema = Yup.object({
+    fname: Yup.string().required('Required!'),
+    lname: Yup.string().required('Required!'),
+    phone: Yup.string().required('Required!'),
+    email: Yup.string()
+        .email('Invalid email format!')
+        .required('Required!'),
+    address: Yup.string().required('Required!'),
+    pdetails: Yup.string().required('Required!')
+})
+function EmergencyBooking(){
+    const formik = useFormik({
+        initialValues,
+        onSubmit,
+        validationSchema
+    })
         return (
             <>
                 <div className="content">
@@ -47,62 +72,55 @@ class EmergencyBooking extends React.Component {
                                     <h4 className="title text-center">Contact Emmergency Services</h4>
                                 </CardHeader>
                                 <CardBody>
-                                    <Form>
+                                    <Form onSubmit={formik.handleSubmit}>
                                         <h6>Give a call!! - 0112667383</h6><br/>
                                         <p>or</p><br/>
                                         <h6>Fill the form</h6>
                                         <Row>
                                             <Col className="pr-md-1" md="6">
                                                 <FormGroup>
-                                                    <label>First Name</label>
-                                                    <Input
-                                                        placeholder="Anani"
-                                                        type="text"
-                                                        required
-                                                    />
+                                                    <label htmlFor="fname">First Name</label>
+                                                    <Input id="fname" name="fname" placeholder="Monika" type="text" max={60}
+                                                           onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.fname}/>
+                                                    {formik.touched.fname && formik.errors.fname? <div className="error" style={{color:"red"}}>{formik.errors.fname}</div> : null}
                                                 </FormGroup>
                                             </Col>
                                             <Col className="pl-md-1" md="6">
                                                 <FormGroup>
-                                                    <label>Last Name</label>
-                                                    <Input
-                                                        placeholder="Upeksha"
-                                                        type="text"
-                                                        required
-                                                    />
+                                                    <label htmlFor="lname">Last Name</label>
+                                                    <Input id="lname" name="lname" placeholder="Anani" type="text" max={60}
+                                                           onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.lname}/>
+                                                    {formik.touched.lname && formik.errors.lname? <div className="error" style={{color:"red"}}>{formik.errors.lname}</div> : null}
                                                 </FormGroup>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col className="pr-md-1" md="6">
                                                 <FormGroup>
-                                                    <label>Phone Number</label>
-                                                    <Input
-                                                        placeholder="+946754321876"
-                                                        type="tel"
-                                                        required
-                                                        pattern="+094-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{3}"
-                                                    />
+                                                    <label htmlFor="phone">Phone Number</label>
+                                                    <Input id="phone" name="phone" placeholder="+0940761234432" type="tel" pattern="+094-[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{3}"
+                                                           onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.phone}/>
+                                                    {formik.touched.phone && formik.errors.phone? <div className="error" style={{color:"red"}}>{formik.errors.phone}</div> : null}
+
                                                 </FormGroup>
                                             </Col>
                                             <Col className="pl-md-1" md="6">
                                                 <FormGroup>
-                                                    <label>Emeil Address</label>
-                                                    <Input
-                                                        placeholder="anani@gmail.com"
-                                                        type="email"
-                                                    />
+                                                    <label htmlFor="email">Email Address</label>
+                                                    <Input id="email" name="email" placeholder="anani@email.com" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                                           onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.email}/>
+                                                    {formik.touched.email && formik.errors.email? <div className="error" style={{color:"red"}}>{formik.errors.email}</div> : null}
+
                                                 </FormGroup>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col md="12">
                                                 <FormGroup>
-                                                    <label>Address</label>
-                                                    <Input
-                                                        placeholder="lake road, Matara"
-                                                        type="textarea"
-                                                    />
+                                                    <label tmlFor="address">Address</label>
+                                                    <Input id="address" name="address" placeholder="No 23/444, Main road, Colombo" type="textarea" min={15} max={100}
+                                                           onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.address}/>
+                                                    {formik.touched.address && formik.errors.address? <div className="error" style={{color:"red"}}>{formik.errors.address}</div> : null}
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -120,12 +138,13 @@ class EmergencyBooking extends React.Component {
                                         <Row>
                                             <Col md="12">
                                                 <FormGroup>
-                                                    <label>Details</label>
-                                                    <Input
-                                                        placeholder="12/100, lake road, Matara"
-                                                        type="textarea"
-                                                        required
-                                                    />
+                                                    <label htmlFor="pdetails">Details</label>
+                                                    <Input id="vdetails" name="vdetails" cols="80"
+                                                           placeholder="Accident happened near the road when travelling by bike due to failiure in the break"
+                                                           rows="4" type="textarea" required
+                                                           onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.pdetails}/>
+                                                    {formik.touched.pdetails && formik.errors.pdetails? <div className="error" style={{color:"red"}}>{formik.errors.pdetails}</div> : null}
+
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -146,6 +165,6 @@ class EmergencyBooking extends React.Component {
             </>
         );
     }
-}
+
 
 export default EmergencyBooking;

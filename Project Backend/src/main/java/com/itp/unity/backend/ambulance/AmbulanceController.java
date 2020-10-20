@@ -7,26 +7,51 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins="http://localhost:3000")
 @RestController
-
 @RequestMapping("/api/")
 public class AmbulanceController {
 
     @Autowired
     AmbulanceService ambulanceService;
 
-  /*  @GetMapping("/ambulance")
+    //get all (worked)
+    @GetMapping("/ambulances")
     public List <Ambulance> getAllAmbulances(){
-        return ambulanceService.getAllAmbulances();
-    }*/
+        return ambulanceService.getAllAmbulance();
+    }
 
+    //get by id (worked)
     @GetMapping("/ambulance/{id}")
     public Ambulance getAmbulancebyId( @PathVariable String id){
         return ambulanceService.getAmbulancebyId(id);
     }
 
+    //adding
+    @PostMapping("/ambulance")
+    public Ambulance createAmb(@RequestBody Ambulance ambulance){
+        //ambulanceService.createAmb(ambulance);
+        return ambulanceService.createAmb(ambulance);
+    }
+
+    //update by id xxxxxxxxxxxxxxxxxxxxxxx
+    @PutMapping("/ambulance/{id}")
+    public Optional<Ambulance> createAmb(@PathVariable("id") String id, @Valid @RequestBody Ambulance ambulance) {
+        return ambulanceService.updateAmb(id, ambulance);
+    }
+
+    /*//delete by id xxxxxxxxxxxxxxxxxxxxxxxxx
+    @DeleteMapping("/ambulance/{id}")
+    public void deleteById(@PathVariable("id") String id){
+
+        ambulanceService.deleteAmb(id);
+    }*/
+/*
+    //adding
     @PostMapping("/ambulance")
     private String saveAmbulance(@RequestBody Ambulance ambulance){
         ambulanceService.createAmb(ambulance);

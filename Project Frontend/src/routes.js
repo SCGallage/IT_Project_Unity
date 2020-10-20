@@ -16,21 +16,23 @@
 
 */
 import Dashboard from "views/Dashboard.js";
-import Icons from "views/Icons.js";
-import Map from "views/Map.js";
-import Notifications from "views/Notifications.js";
-import Rtl from "views/Rtl.js";
-import TableList from "views/TableList.js";
-import Typography from "views/Typography.js";
-import UserProfile from "views/UserProfile.js";
+//import Icons from "views/Icons.js";
+//import Map from "views/Map.js";
+//import Notifications from "views/Notifications.js";
+//import Rtl from "views/Rtl.js";
+//import TableList from "views/TableList.js";
+//import Typography from "views/Typography.js";
+//import UserProfile from "views/UserProfile.js";
 
-import AddAmbulanceDetails from "./components/Ambulance/AddAmbulanceDetails";
 import EmergencyPro from "./components/Ambulance/EmergencyPro";
 import ViewAmbulanceDetails from "./components/Ambulance/ViewAmbulanceDetails";
-import ViewAmbulanceTimeSlot from "./components/Ambulance/AddAmbulanceTimeSlot";
 import EditAmbulanceTimeSlot from "./components/Ambulance/EditAmbulanceTimeSlot";
 import AddAmbulanceTimeSlot from "./components/Ambulance/AddAmbulanceTimeSlot";
-
+import EmergencyBooking from "./components/Ambulance/EmergencyBooking";
+import ViewAmbulanceTimeShedule from "./components/Ambulance/ViewAmbulanceTimeShedule";
+import EditAmbulanceDetails from "./components/Ambulance/EditAmbulanceDetails";
+import UserProfile from "./views/UserProfile";
+import AddAmb from "./views/UserProfile";
 var routes = [
   {
     path: "/dashboard",
@@ -59,39 +61,32 @@ var routes = [
   },
 
   {
-    path: "/add-ambulance-details",
+    path: "/add-ambulance",
     rtlName: "الرموز",
-    component: AddAmbulanceDetails,
+    component: AddAmb,
     layout: "/admin"
   },
-
   {
-    path: "/view-ambulance-timeslots",
+    path: "/edit-ambulance{id}",
     rtlName: "الرموز",
-    component: ViewAmbulanceTimeSlot,
+    component: EditAmbulanceDetails,
     layout: "/admin"
-
-import ItemType from "./views/ItemType";
-import Item from "./views/Item";
-import AddItem from "./views/AddItem";
-import ItemDetails from "./views/ItemDetails";
-
-var routes = [
-  {
-    path: "/inventory",
-    name: "Item Details",
-    rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
-    component: ItemDetails,
-    layout: "/nurse",
-    invisible: true,
-    exact : true
-
   },
-
+  {
+    path: "/view-ambulance-timeslot",
+    rtlName: "الرموز",
+    component:ViewAmbulanceTimeShedule,
+    layout: "/admin"
+  },
+  {
+    path: "/edit-ambulance-details",
+    rtlName: "الرموز",
+    component:EditAmbulanceDetails,
+    layout: "/admin"
+  },
   {
 
-    path: "/edit-ambulance-timeslot",
+    path: "/edit-ambulance-timeslot/{id}",
     rtlName: "الرموز",
     component: EditAmbulanceTimeSlot,
     layout: "/admin"
@@ -101,33 +96,6 @@ var routes = [
     rtlName: "الرموز",
     component: AddAmbulanceTimeSlot,
     layout: "/admin"
-
-    path: "/inventory/addItem",
-    name: "Add Item",
-    rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
-    component: AddItem,
-    layout: "/nurse"
-  },
-  {
-    path: "/inventory/:id",
-    name: "Item",
-    rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
-    component: Item,
-    layout: "/nurse",
-    invisible: true
-  },
-  {
-    path: "/inventory/items/:type",
-    name: "Item",
-    rtlName: "ار تي ال",
-    icon: "tim-icons icon-world",
-    component: ItemType,
-    layout: "/nurse",
-    invisible: true
-
   }
-
 ];
 export default routes;

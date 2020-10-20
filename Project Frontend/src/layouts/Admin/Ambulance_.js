@@ -32,7 +32,7 @@ import logo from "assets/img/react-logo.png";
 
 var ps;
 
-class Admin extends React.Component {
+class Ambulance_ extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -152,4 +152,4 @@ class Admin extends React.Component {
   }
 }
 
-export default Admin;
+export default Ambulance_;

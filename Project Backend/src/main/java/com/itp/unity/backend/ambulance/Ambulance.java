@@ -6,12 +6,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "ambulance")
-@SequenceGenerator(name="emSequence", initialValue=8000, allocationSize=9000)
+//@SequenceGenerator(name="emSequence", initialValue=8000, allocationSize=9000)
 
 public class Ambulance{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "emSequence")
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "emSequence")
     private String id;
 
     @Column(name="reg_No")
@@ -38,14 +38,11 @@ public class Ambulance{
     @Column(name="Details")
     private String vehiDetails;
 
-    @Column(name="action_")
-    private String action_;
-
     public Ambulance() {
         super();
     }
 
-    public Ambulance (String regNo, String vehiModel, String email, String phone, String fName, String lName, String city, String vehiDetails, String action_) {
+    public Ambulance (String regNo, String vehiModel, String email, String phone, String fName, String lName, String city, String vehiDetails) {
         super();
         //this.id = id;
         this.regNo = regNo;
@@ -56,7 +53,6 @@ public class Ambulance{
         this.lName = lName;
         this.city = city;
         this.vehiDetails = vehiDetails;
-        this.action_ = action_;
     }
 
     public String getId() {
@@ -129,14 +125,6 @@ public class Ambulance{
 
     public void setVehiDetails(String vehiDetails) {
         this.vehiDetails = vehiDetails;
-    }
-
-    public String getAction_() {
-        return action_;
-    }
-
-    public void setAction_(String action_) {
-        this.action_ = action_;
     }
 /*
     @Override

@@ -29,7 +29,7 @@ import {
     Form,
     Input,
     Row,
-    Col,
+    Col, Breadcrumb, BreadcrumbItem,
 } from "reactstrap";
 
 class EmergencyPro extends React.Component {
@@ -38,6 +38,10 @@ class EmergencyPro extends React.Component {
             <>
                 <div className="content">
                     <Row>
+                        <Breadcrumb tag="nav" listTag="div" color="warning">
+                            <BreadcrumbItem tag="a" href="/dashboard">Dashboard</BreadcrumbItem>
+                            <BreadcrumbItem active tag="span">Emergency</BreadcrumbItem>
+                        </Breadcrumb>
                         <Col md="9" style={{margin:"0% 10% 0% 10%"}}>
                             <Card>
                                 <CardHeader style={
@@ -60,7 +64,13 @@ class EmergencyPro extends React.Component {
                                             <a href="#pablo" onClick={e => e.preventDefault()}>
                                                 <h5 className="title">Ambulance Details</h5>
                                             </a>
-                                            <Button color="primary" style={{background: "purple"}}> <a href="/admin/view-ambulance-details" style={{color:"white"}}>Ambulance</a></Button>
+
+                                            <div>
+                                                <Button color="primary animation-on-hover" style={{background: "purple"}}> <a href="/admin/view-ambulance-details" style={{color:"white"}}>Ambulance</a> </Button>
+                                            </div>
+                                            <div>
+                                                <Button color="primary animation-on-hover" style={{background: "#cc0099"}}> <a href="/admin/add-ambulance" style={{color:"white"}}>ADD</a> </Button>
+                                            </div>
                                         </div>
                                         <div className="card-description">
                                         </div>
@@ -79,7 +89,13 @@ class EmergencyPro extends React.Component {
                                             <a href="#pablo" onClick={e => e.preventDefault()}>
                                                 <h5 className="title">Ambulance Time Shedule</h5>
                                             </a>
-                                            <Button color="primary" style={{background: "purple"}}> <a href="/admin/view-ambulance-timeslots" style={{color:"white"}}>Shedule</a></Button>
+                                            <div>
+                                            <Button color="primary animation-on-hover" style={{background: "purple"}}> <a href="/admin/view-ambulance-timeslot" style={{color:"white"}}>Shedule</a></Button>
+                                            </div>
+                                                <div>
+                                                <Button color="primary animation-on-hover" style={{background: "#cc0099"}}> <a href="/admin/add-ambulance-timeslot" style={{color:"white"}}>ADD</a> </Button>
+                                            </div>
+
                                         </div>
                                         <div className="card-description">
                                         </div>
